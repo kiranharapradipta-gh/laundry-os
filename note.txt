@@ -1,0 +1,61 @@
+&?H$SKMmB!Zq3if
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5YzRlOGJjMS0zODlhLTQ1NDEtYjk0My04MDZmMGFmMGI2NzUiLCJidXNpbmVzc0lkIjoiZGRmOTcwZDktMDdhMC00NjI2LWJlNTAtOWMwZTBjMGU0ZWEyIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg4MjkyOTA2LCJleHAiOjE3ODg4OTc3MDZ9.NFDXXNlFaryOihFGqq-ldqTRGwZD8hA9V8Sy43c4DkE
+
+{
+  "name":"Rak A-01",
+  "description":"Rak lantai 1 bagian kiri"
+}
+
+{
+  "zone":"A",
+  "rack":"01",
+  "shelf":"01",
+  "slot":"01"
+}
+
+{
+  "zone":"A",
+  "rack":"01",
+  "shelf":"01",
+  "slot":"01"
+}
+
+{
+  "phone":"08123456789",
+  "password":"password"
+}
+
+{
+  "name":"Cuci Kering",
+  "description":"Cuci dan kering pakaian",
+  "price":7000,"unit":"kg"
+}
+
+{
+  "name":"Cuci Setrika",
+  "description":"Cuci dan setrika pakaian",
+  "price":10000,"unit":"kg"
+}
+
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5YzRlOGJjMS0zODlhLTQ1NDEtYjk0My04MDZmMGFmMGI2NzUiLCJidXNpbmVzc0lkIjoiZGRmOTcwZDktMDdhMC00NjI2LWJlNTAtOWMwZTBjMGU0ZWEyIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg4MzUwOTA5LCJleHAiOjE3ODg5NTU3MDl9.5cg5Kqh0M99fZtLYrfR2DIHy5GE4S3AFnkL1p5ljjug
+Customer      : 598bc5da-1581-453c-940a-111210011404
+Service       : 038a8091-1221-4326-892e-ede4d605f3b9
+Storage       : c6408151-3ae6-4acd-90bd-a89fba118d5b
+
+{
+  "customerId":"CUSTOMER_ID",
+  "storageLocationId":"STORAGE_ID",
+  "items":[
+    {
+      "serviceId":"SERVICE_ID",
+      "description":"Pakaian",
+      "quantity":3,
+      "notes":"Kondisi baik"
+    }
+  ]
+}
+
+ItemId : fbac661c-e589-47e8-b174-78a167a835a8
+
+9add110587abcd9889a45b02123bdab011610949acf2ac57805f7d7861a06cfe
