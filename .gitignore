@@ -7,3 +7,6 @@ dist/
 build/
 
 .prisma/
+
+note.txt
+test-photo.jpg
