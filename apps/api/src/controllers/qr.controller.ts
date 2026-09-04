@@ -4,6 +4,7 @@ import type { AuthRequest } from "../middleware/auth.middleware.js";
 import {
   getOrderByQrToken,
   pickupOrderByQrToken,
+  scanOrderQrToken,
 } from "../services/qr.service.js";
 
 export async function getOrderByQr(
@@ -104,6 +105,66 @@ export async function pickupOrderByQr(
     return res.status(500).json({
       success: false,
       message: "Gagal memproses pickup order",
+    });
+  }
+}
+
+export async function scanOrderQr(
+  req: AuthRequest,
+  res: Response
+) {
+  try {
+    const token = req.params.token;
+
+    if (
+      typeof token !== "string" ||
+      !token.trim()
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "QR token tidak valid",
+      });
+    }
+
+    const order =
+      await scanOrderQrToken(
+        req.user!.businessId,
+        token.trim()
+      );
+
+    return res.json({
+      success: true,
+      data: order,
+    });
+  } catch (error) {
+    console.error(
+      "Scan order QR error:",
+      error
+    );
+
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Gagal membaca QR order";
+
+    if (
+      message.includes(
+        "QR order tidak ditemukan"
+      ) ||
+      message.includes(
+        "belum siap diambil"
+      )
+    ) {
+      return res.status(400).json({
+        success: false,
+        message,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Gagal membaca QR order",
     });
   }
 }

@@ -71,14 +71,6 @@ enum NotificationStatus {
   FAILED
 }
 
-enum OrderStatus {
-  RECEIVED
-  PROCESSING
-  READY
-  PICKED_UP
-  CANCELLED
-}
-
 // ========================================
 // BUSINESS
 // ========================================
@@ -99,10 +91,6 @@ model Business {
   notifications    Notification[]
   complaints       Complaint[]
   auditLogs        AuditLog[]
-
-  services          Service[]
-  storageLocations  StorageLocation[]
-  orders            Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -156,8 +144,6 @@ model Customer {
   qrCodes       QRCode[]
   complaints    Complaint[]
   notifications Notification[]
-
-  orders Order[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -501,122 +487,4 @@ model AuditLog {
   @@index([businessId, entity])
   @@index([businessId, entityId])
   @@index([businessId, createdAt])
-}
-
-model Service {
-  id          String   @id @default(uuid())
-  businessId  String
-
-  name        String
-  description String?
-  price       Int
-  unit        String   @default("kg")
-
-  isActive    Boolean  @default(true)
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  business    Business @relation(fields: [businessId], references: [id])
-  orderItems  OrderItem[]
-
-  @@index([businessId])
-}
-
-model StorageLocation {
-  id          String   @id @default(uuid())
-  businessId  String
-
-  name        String
-  description String?
-
-  isActive    Boolean  @default(true)
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  business    Business @relation(fields: [businessId], references: [id])
-  orders      Order[]
-
-  @@index([businessId])
-}
-
-model Order {
-  id                  String   @id @default(uuid())
-  businessId          String
-  customerId          String
-
-  orderNumber         String
-
-  status              OrderStatus @default(RECEIVED)
-
-  subtotal             Int
-  discount             Int      @default(0)
-  total                Int
-
-  qrToken              String   @unique
-  qrExpiresAt          DateTime?
-
-  storageLocationId    String?
-
-  receivedAt           DateTime @default(now())
-  readyAt              DateTime?
-  pickedUpAt           DateTime?
-
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
-  business             Business @relation(fields: [businessId], references: [id])
-  customer             Customer @relation(fields: [customerId], references: [id])
-  storageLocation      StorageLocation? @relation(fields: [storageLocationId], references: [id])
-
-  items                OrderItem[]
-
-  @@unique([businessId, orderNumber])
-  @@index([businessId])
-  @@index([customerId])
-  @@index([status])
-  @@index([storageLocationId])
-}
-
-model OrderItem {
-  id              String   @id @default(uuid())
-  orderId         String
-  serviceId       String
-
-  name            String
-  quantity        Int      @default(1)
-
-  weight          Decimal? @db.Decimal(10, 2)
-
-  condition       String?
-  notes           String?
-
-  price           Int
-  subtotal        Int
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  order           Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  service         Service @relation(fields: [serviceId], references: [id])
-
-  photos          ItemPhoto[]
-
-  @@index([orderId])
-  @@index([serviceId])
-}
-
-model ItemPhoto {
-  id          String   @id @default(uuid())
-  orderItemId String
-
-  url         String
-  storageKey  String?
-
-  createdAt   DateTime @default(now())
-
-  orderItem   OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
-
-  @@index([orderItemId])
 }

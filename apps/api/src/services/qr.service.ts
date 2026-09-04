@@ -152,3 +152,122 @@ export async function pickupOrderByQrToken(
     return updatedOrder;
   });
 }
+
+export async function scanOrderQrToken(
+  businessId: string,
+  token: string
+) {
+  const qrCode =
+    await prisma.qRCode.findFirst({
+      where: {
+        token,
+        type: "ORDER",
+        isActive: true,
+        businessId,
+      },
+
+      include: {
+        order: {
+          include: {
+            customer: true,
+
+            items: {
+              include: {
+                service: true,
+              },
+            },
+
+            storageAssignments: {
+              where: {
+                releasedAt: null,
+              },
+
+              include: {
+                storageLocation: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+  if (!qrCode || !qrCode.order) {
+    throw new Error(
+      "QR order tidak ditemukan atau sudah tidak aktif"
+    );
+  }
+
+  const order = qrCode.order;
+
+  if (order.status !== "READY") {
+    throw new Error(
+      `Order belum siap diambil. Status saat ini: ${order.status}`
+    );
+  }
+
+  const storage =
+    order.storageAssignments[0];
+
+  return {
+    orderNumber: order.orderNumber,
+
+    status: order.status,
+
+    paymentStatus:
+      order.paymentStatus,
+
+    customer: {
+      name: order.customer.name,
+      nickname:
+        order.customer.nickname,
+      phone: order.customer.phone,
+    },
+
+    items: order.items.map(
+      (item) => ({
+        description:
+          item.description,
+
+        quantity: item.quantity,
+
+        unitPrice:
+          item.unitPrice,
+
+        subtotal:
+          item.subtotal,
+
+        notes: item.notes,
+
+        service: item.service
+          ? {
+              name: item.service.name,
+              unit: item.service.unit,
+            }
+          : null,
+      })
+    ),
+
+    storage: storage
+      ? {
+          zone:
+            storage.storageLocation.zone,
+
+          rack:
+            storage.storageLocation.rack,
+
+          shelf:
+            storage.storageLocation.shelf,
+
+          slot:
+            storage.storageLocation.slot,
+        }
+      : null,
+
+    subtotal: order.subtotal,
+    discount: order.discount,
+    total: order.total,
+    paidAmount: order.paidAmount,
+
+    readyAt: order.readyAt,
+  };
+}

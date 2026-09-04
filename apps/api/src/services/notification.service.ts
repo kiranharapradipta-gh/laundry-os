@@ -44,7 +44,7 @@ Terima kasih sudah menggunakan LaundryOS! 🙏`;
 export async function sendOrderStatusNotification(
   phone: string,
   customerName: string,
-  orderNumber: string,
+  orderNumber: string|undefined,
   status: string
 ) {
   const statusMessages: Record<
@@ -94,7 +94,7 @@ ${statusText}`;
 export async function sendOrderReadyNotification(
   phone: string,
   customerName: string,
-  orderNumber: string,
+  orderNumber: string|undefined,
   qrToken: string
 ) {
   const message = `🧺 *Pesanan Laundry Siap Diambil*

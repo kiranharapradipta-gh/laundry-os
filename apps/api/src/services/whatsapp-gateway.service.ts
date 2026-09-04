@@ -23,7 +23,7 @@ if (!GATEWAY_API_KEY) {
 }
 
 export async function sendWhatsAppText(
-  phone: string,
+  phone: string|undefined,
   message: string
 ) {
   const response = await fetch(
@@ -56,7 +56,7 @@ export async function sendWhatsAppText(
 }
 
 export async function sendWhatsAppImage(
-  phone: string,
+  phone: string|undefined,
   image: Buffer,
   caption?: string
 ) {
