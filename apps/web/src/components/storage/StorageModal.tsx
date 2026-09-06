@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import type { CreateStorageInput, StorageLocation, UpdateStorageInput } from "../../../types/storage";
-import Modal from "../Modal";
+import type { CreateStorageInput, StorageLocation, UpdateStorageInput } from "../../types/storage";
+import Modal from "../ui/Modal";
 
 interface StorageModalProps {
   open: boolean;

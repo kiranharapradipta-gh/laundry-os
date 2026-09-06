@@ -1,5 +1,5 @@
-import type { StorageLocation } from "../../../types/service";
-import { formatDate } from "../../../utils/format";
+import type { StorageLocation } from "../../types/service";
+import { formatDate } from "../../utils/format";
 
 interface StorageTableProps {
   locations: StorageLocation[];

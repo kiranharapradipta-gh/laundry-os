@@ -15,8 +15,8 @@ import type {
 } from "../types/customer";
 
 import "../styles/customers.css";
-import CustomerTable from "../components/ui/customers/CustomerTable";
-import CustomerModal from "../components/ui/customers/CustomerModal";
+import CustomerTable from "../components/customers/CustomerTable";
+import CustomerModal from "../components/customers/CustomerModal";
 
 const PAGE_SIZES = [5, 10, 20];
 

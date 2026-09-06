@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import type { CreateCustomerInput, Customer, UpdateCustomerInput } from "../../../types/customer";
-import Modal from "../Modal";
+import type { CreateCustomerInput, Customer, UpdateCustomerInput } from "../../types/customer";
+import Modal from "../ui/Modal";
 
 interface Props {
   open: boolean;

@@ -10,8 +10,8 @@ import {
   updateStorage,
 } from "../api/storage.api";
 import "../styles/storage.css";
-import StorageTable from "../components/ui/storage/StorageTable";
-import StorageModal from "../components/ui/storage/StorageModal";
+import StorageTable from "../components/storage/StorageTable";
+import StorageModal from "../components/storage/StorageModal";
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20];
 
