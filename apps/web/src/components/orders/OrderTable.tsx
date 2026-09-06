@@ -1,5 +1,5 @@
-import type { Order } from "../../../types/order";
-import { formatDateTime, formatRupiah } from "../../../utils/format";
+import type { Order } from "../../types/order";
+import { formatDateTime, formatRupiah } from "../../utils/format";
 import OrderStatusBadge from "./OrderStatusBadge";
 
 interface Props {

@@ -1,5 +1,5 @@
-import type { LaundryService } from "../../../types/service";
-import { formatRupiah } from "../../../utils/format";
+import type { LaundryService } from "../../types/service";
+import { formatRupiah } from "../../utils/format";
 
 interface ServiceTableProps {
   services: LaundryService[];

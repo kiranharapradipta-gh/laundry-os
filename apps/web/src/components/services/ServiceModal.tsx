@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import type { CreateServiceInput, LaundryService, UpdateServiceInput } from "../../../types/service";
-import Modal from "../Modal";
-import { formatRupiah } from "../../../utils/format";
+import type { CreateServiceInput, LaundryService, UpdateServiceInput } from "../../types/service";
+import Modal from "../ui/Modal";
+import { formatRupiah } from "../../utils/format";
 
 interface ServiceModalProps {
   open: boolean;

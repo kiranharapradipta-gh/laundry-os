@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import OrderStatusBadge from "./OrderStatusBadge";
-import type { Order, OrderStatus } from "../../../types/order";
-import { getNextStatus, ORDER_STATUS_LABEL } from "../../../utils/order";
-import { formatDateTime, formatRupiah } from "../../../utils/format";
-import Modal from "../Modal";
+import type { Order, OrderStatus } from "../../types/order";
+import { getNextStatus, ORDER_STATUS_LABEL } from "../../utils/order";
+import Modal from "../ui/Modal";
+import { formatDateTime, formatRupiah } from "../../utils/format";
 
 interface Props {
   order: Order | null;

@@ -11,8 +11,8 @@ import type {
 } from "../types/service";
 import { formatRupiah } from "../utils/format";
 import "../styles/services.css";
-import ServiceTable from "../components/ui/services/ServiceTable";
-import ServiceModal from "../components/ui/services/ServiceModal";
+import ServiceTable from "../components/services/ServiceTable";
+import ServiceModal from "../components/services/ServiceModal";
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20];
 

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Customer } from "../../../types/customer";
-import type { LaundryService } from "../../../types/service";
-import type { StorageLocation } from "../../../types/storage";
-import type { CreateOrderInput, CreateOrderItemInput } from "../../../types/order";
-import Modal from "../Modal";
-import { formatRupiah } from "../../../utils/format";
+import type { Customer } from "../../types/customer";
+import type { LaundryService } from "../../types/service";
+import type { StorageLocation } from "../../types/storage";
+import type { CreateOrderInput, CreateOrderItemInput } from "../../types/order";
+import Modal from "../ui/Modal";
+import { formatRupiah } from "../../utils/format";
 
 interface Props {
   open: boolean;

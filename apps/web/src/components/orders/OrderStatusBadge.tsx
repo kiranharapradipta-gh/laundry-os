@@ -1,5 +1,5 @@
-import type { OrderStatus } from "../../../types/order";
-import { ORDER_STATUS_CLASS, ORDER_STATUS_LABEL } from "../../../utils/order";
+import type { OrderStatus } from "../../types/order";
+import { ORDER_STATUS_CLASS, ORDER_STATUS_LABEL } from "../../utils/order";
 
 interface Props {
   status: OrderStatus;

@@ -1,4 +1,4 @@
-import type { StorageLocation } from "../../types/service";
+import type { StorageLocation } from "../../types/storage";
 import { formatDate } from "../../utils/format";
 
 interface StorageTableProps {

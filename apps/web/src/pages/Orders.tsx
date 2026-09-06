@@ -20,9 +20,9 @@ import { formatRupiah } from "../utils/format";
 
 import "../styles/orders.css";
 import { getStorageLocations } from "../api/storage.api";
-import OrderTable from "../components/ui/orders/OrderTable";
-import OrderModal from "../components/ui/orders/OrderModal";
-import OrderDetail from "../components/ui/orders/OrderDetail";
+import OrderTable from "../components/orders/OrderTable";
+import OrderModal from "../components/orders/OrderModal";
+import OrderDetail from "../components/orders/OrderDetail";
 
 const PAGE_SIZES = [5, 10, 20];
 
