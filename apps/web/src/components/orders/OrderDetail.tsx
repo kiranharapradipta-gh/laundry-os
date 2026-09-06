@@ -4,6 +4,8 @@ import type { Order, OrderStatus } from "../../types/order";
 import { getNextStatus, ORDER_STATUS_LABEL } from "../../utils/order";
 import Modal from "../ui/Modal";
 import { formatDateTime, formatRupiah } from "../../utils/format";
+import OrderCancelModal from "../orders/OrderCancelModal";
+import OrderStatusConfirmModal from "../orders/OrderStatusConfirmModal";
 
 interface Props {
   order: Order | null;
@@ -26,6 +28,8 @@ export default function OrderDetail({
 }: Props) {
   const [updating, setUpdating] = useState(false);
   const [note, setNote] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showStatusConfirmModal, setShowStatusConfirmModal] = useState(false);
 
   const nextStatus = useMemo(
     () => (order ? getNextStatus(order.status) : null),
@@ -34,8 +38,8 @@ export default function OrderDetail({
 
   if (!order) return null;
 
-  async function handleStatusUpdate(status: OrderStatus) {
-  if (!order) return null;
+  async function handleStatusUpdate(status: OrderStatus | null) {
+    if (!order || !status) return null;
     try {
       setUpdating(true);
 
@@ -249,9 +253,7 @@ export default function OrderDetail({
               type="button"
               className="button button-primary"
               disabled={updating || loading}
-              onClick={() =>
-                handleStatusUpdate(nextStatus)
-              }
+              onClick={() => setShowStatusConfirmModal(true)}
             >
               {updating
                 ? "Memproses..."
@@ -270,9 +272,7 @@ export default function OrderDetail({
               type="button"
               className="button button-danger-outline"
               disabled={updating || loading}
-              onClick={() =>
-                handleStatusUpdate("CANCELLED")
-              }
+              onClick={() => setShowCancelModal(true)}
             >
               Batalkan Order
             </button>
@@ -289,6 +289,28 @@ export default function OrderDetail({
           </button>
         </div>
       </div>
+      <OrderStatusConfirmModal
+        open={showStatusConfirmModal}
+        currentStatus={order.status}
+        nextStatus={nextStatus}
+        orderNumber={order.orderNumber}
+        loading={updating}
+        onClose={() => setShowStatusConfirmModal(false)}
+        onConfirm={async () => {
+          await handleStatusUpdate(nextStatus);
+          setShowStatusConfirmModal(false);
+        }}
+      />
+      <OrderCancelModal
+        open={showCancelModal}
+        orderNumber={order.orderNumber}
+        loading={updating}
+        onClose={() => setShowCancelModal(false)}
+        onConfirm={async () => {
+          await handleStatusUpdate("CANCELLED");
+          setShowCancelModal(false);
+        }}
+      />
     </Modal>
   );
 }

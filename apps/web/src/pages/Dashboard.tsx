@@ -1,3 +1,5 @@
+import "../styles/dashboard.css"
+
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -18,6 +20,7 @@ import {
 } from "../utils/order";
 
 export default function Dashboard() {
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

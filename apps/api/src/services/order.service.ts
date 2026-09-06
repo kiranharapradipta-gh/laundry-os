@@ -786,7 +786,7 @@ export async function updateOrderStatus(
           });
         }
 
-        return updatedOrder;
+        return getOrderById(businessId, orderId);
       }
     );
 
@@ -823,7 +823,7 @@ export async function updateOrderStatus(
           customer.phone,
           customer.nickname ||
             customer.name,
-          updatedOrder.orderNumber,
+          updatedOrder?.orderNumber,
           qrCode.token
         );
       } else {
@@ -831,7 +831,7 @@ export async function updateOrderStatus(
           customer.phone,
           customer.nickname ||
             customer.name,
-          updatedOrder.orderNumber,
+          updatedOrder?.orderNumber,
           input.status
         );
       }

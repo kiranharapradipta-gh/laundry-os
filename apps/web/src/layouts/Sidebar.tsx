@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
+interface SidebarProps {
+  open?: boolean;
+  onClose?: () => void;
+}
+
 const navigation = [
   {
     label: "Dashboard",
@@ -29,7 +34,10 @@ const navigation = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({
+  // open = false,
+  onClose,
+}: SidebarProps) {
   const { user, logout } = useAuth();
 
   return (
@@ -55,6 +63,7 @@ export default function Sidebar() {
             key={item.path}
             to={item.path}
             end={item.path === "/"}
+            onClick={onClose}
             className={({ isActive }) =>
               `nav-item ${isActive ? "active" : ""}`
             }

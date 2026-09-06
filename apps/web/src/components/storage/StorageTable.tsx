@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { StorageLocation } from "../../types/storage";
 import { formatDate } from "../../utils/format";
 
@@ -35,6 +36,9 @@ export default function StorageTable({
   onEdit,
   onToggle,
 }: StorageTableProps) {
+
+  const navigate = useNavigate();
+
   return (
     <div className="storage-table-wrap">
       <table className="storage-table">
@@ -122,7 +126,8 @@ export default function StorageTable({
                         <span className="storage-occupancy-dot" />
                         <div>
                           <strong>Kosong</strong>
-                          <span>Belum ada order</span>
+                          <br />
+                          {/* <span>Belum ada order</span> */}
                         </div>
                       </div>
                     );
@@ -133,13 +138,21 @@ export default function StorageTable({
                       <span className="storage-occupancy-dot" />
 
                       <div>
-                        <strong>{assignment.order.orderNumber}</strong>
+                        <button
+                          type="button"
+                          className="storage-order-link"
+                          onClick={() =>
+                            navigate(`/orders?id=${assignment.order.id}`)
+                          }
+                        >
+                          {assignment.order.orderNumber}
+                        </button>
 
-                        <span>
+                        {/* <span>
                           {assignment.order.customer?.nickname ||
                             assignment.order.customer?.name ||
                             "Customer"}
-                        </span>
+                        </span> */}
                       </div>
                     </div>
                   );

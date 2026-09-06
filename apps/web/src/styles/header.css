@@ -1,0 +1,33 @@
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.header-left > div:last-child {
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  .header-left h1 {
+    font-size: 18px;
+  }
+
+  .header-left p {
+    display: none;
+  }
+
+  .header-business > div:last-child {
+    display: none;
+  }
+
+  .business-avatar {
+    width: 36px;
+    height: 36px;
+  }
+}

@@ -1,3 +1,5 @@
+import "../styles/orders.css";
+
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -18,7 +20,6 @@ import {
 } from "../utils/order";
 import { formatRupiah } from "../utils/format";
 
-import "../styles/orders.css";
 import { getStorageLocations } from "../api/storage.api";
 import OrderTable from "../components/orders/OrderTable";
 import OrderModal from "../components/orders/OrderModal";
@@ -246,7 +247,9 @@ export default function Orders() {
       ),
     );
 
-    setSelectedOrder(updated);
+    setSelectedOrder((current) =>
+      current?.id === orderId ? updated : current,
+    );
   }
 
   return (

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev:api": "npm run dev --workspace=@laundry/api",
-    "dev:web": "npm run dev --workspace=@laundry/web",
+    "dev:web": "npm run dev --workspace=@laundry/web -- --host",
     "dev:wag": "npm --workspace apps/whatsapp-gateway run dev",
     "build": "npm run build --workspaces"
   },
