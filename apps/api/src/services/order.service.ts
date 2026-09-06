@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { prisma } from "../config/database.js";
+import { createSignedUrl } from "./file-storage.service.js";
 import {
   sendOrderCreatedNotification,
   sendOrderStatusNotification,
@@ -361,46 +362,149 @@ export async function createOrder(
 // GET ORDERS
 // ========================================
 
+export interface GetOrdersOptions {
+  search?: string;
+  status?: string;
+  page?: number;
+  limit?: number;
+}
+
 export async function getOrders(
-  businessId: string
+  businessId: string,
+  options: GetOrdersOptions = {}
 ) {
-  return prisma.order.findMany({
-    where: {
-      businessId,
-    },
+  const search =
+    options.search?.trim() || "";
 
-    include: {
-      customer: true,
+  const page = Math.max(
+    1,
+    options.page ?? 1
+  );
 
-      items: {
-        include: {
-          service: true,
+  const limit = Math.min(
+    100,
+    Math.max(
+      1,
+      options.limit ?? 20
+    )
+  );
+
+  const skip =
+    (page - 1) * limit;
+
+  const where = {
+    businessId,
+
+    ...(options.status &&
+      options.status !== "ALL"
+      ? {
+          status:
+            options.status as
+              | "RECEIVED"
+              | "WASHING"
+              | "DRYING"
+              | "IRONING"
+              | "READY"
+              | "PICKED_UP"
+              | "CANCELLED",
+        }
+      : {}),
+
+    ...(search
+      ? {
+          OR: [
+            {
+              orderNumber: {
+                contains: search,
+                mode: "insensitive" as const,
+              },
+            },
+            {
+              customer: {
+                name: {
+                  contains: search,
+                  mode: "insensitive" as const,
+                },
+              },
+            },
+            {
+              customer: {
+                nickname: {
+                  contains: search,
+                  mode: "insensitive" as const,
+                },
+              },
+            },
+            {
+              customer: {
+                phone: {
+                  contains: search,
+                },
+              },
+            },
+          ],
+        }
+      : {}),
+  };
+
+  const [
+    orders,
+    total,
+  ] = await prisma.$transaction([
+    prisma.order.findMany({
+      where,
+
+      include: {
+        customer: true,
+
+        items: {
+          include: {
+            service: true,
+          },
+        },
+
+        qrCodes: true,
+
+        statusHistory: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+
+        storageAssignments: {
+          where: {
+            releasedAt: null,
+          },
+          include: {
+            storageLocation: true,
+          },
         },
       },
 
-      qrCodes: true,
-
-      statusHistory: {
-        orderBy: {
-          createdAt: "asc",
-        },
+      orderBy: {
+        createdAt: "desc",
       },
 
-      storageAssignments: {
-        where: {
-          releasedAt: null,
-        },
+      skip,
+      take: limit,
+    }),
 
-        include: {
-          storageLocation: true,
-        },
-      },
-    },
+    prisma.order.count({
+      where,
+    }),
+  ]);
 
-    orderBy: {
-      createdAt: "desc",
+  return {
+    data: orders,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(
+        total / limit
+      ),
     },
-  });
+  };
 }
 
 // ========================================
@@ -411,7 +515,7 @@ export async function getOrderById(
   businessId: string,
   orderId: string
 ) {
-  return prisma.order.findFirst({
+  const order = await prisma.order.findFirst({
     where: {
       id: orderId,
       businessId,
@@ -450,7 +554,89 @@ export async function getOrderById(
       complaints: true,
     },
   });
+
+  if (!order) {
+    return null;
+  }
+
+  const items = await Promise.all(
+    order.items.map(async (item) => {
+      const photos = await Promise.all(
+        item.photos.map(async (photo) => {
+          if (!photo.storageKey) {
+            return photo;
+          }
+
+          const signedUrl =
+            await createSignedUrl(
+              photo.storageKey,
+              60 * 15
+            );
+
+          return {
+            ...photo,
+            url: signedUrl,
+          };
+        })
+      );
+
+      return {
+        ...item,
+        photos,
+      };
+    })
+  );
+
+  return {
+    ...order,
+    items,
+  };
 }
+
+// export async function getOrderById(
+//   businessId: string,
+//   orderId: string
+// ) {
+//   return prisma.order.findFirst({
+//     where: {
+//       id: orderId,
+//       businessId,
+//     },
+
+//     include: {
+//       customer: true,
+
+//       items: {
+//         include: {
+//           service: true,
+//           photos: true,
+//         },
+//       },
+
+//       qrCodes: true,
+
+//       statusHistory: {
+//         orderBy: {
+//           createdAt: "asc",
+//         },
+//       },
+
+//       storageAssignments: {
+//         where: {
+//           releasedAt: null,
+//         },
+
+//         include: {
+//           storageLocation: true,
+//         },
+//       },
+
+//       payments: true,
+
+//       complaints: true,
+//     },
+//   });
+// }
 
 function validateStatusTransition(
   currentStatus: UpdateOrderStatusInput["status"],

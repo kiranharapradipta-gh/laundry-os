@@ -1,0 +1,727 @@
+/* ========================================
+   STORAGE PAGE
+======================================== */
+
+.storage-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.storage-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.storage-eyebrow {
+  margin-bottom: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #7c8494;
+}
+
+.storage-page-header h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #171a21;
+}
+
+.storage-page-header p {
+  margin: 8px 0 0;
+  color: #747b89;
+  font-size: 14px;
+}
+
+.storage-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  background: #171a21;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.storage-add-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.storage-add-btn span {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* ========================================
+   STATS
+======================================== */
+
+.storage-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.storage-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid #e9ebef;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.storage-stat-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 11px;
+  background: #f3f4f6;
+  font-size: 18px;
+}
+
+.storage-stat-card div:last-child {
+  min-width: 0;
+}
+
+.storage-stat-card span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #858c99;
+}
+
+.storage-stat-card strong {
+  display: block;
+  color: #171a21;
+  font-size: 21px;
+  line-height: 1;
+}
+
+/* ========================================
+   TOOLBAR
+======================================== */
+
+.storage-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.storage-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: min(420px, 100%);
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid #e2e5ea;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.storage-search span {
+  color: #8a919d;
+  font-size: 21px;
+}
+
+.storage-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #20242c;
+  font-size: 13px;
+}
+
+.storage-search input::placeholder {
+  color: #a2a8b2;
+}
+
+.storage-inactive-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #656c78;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.storage-inactive-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: #171a21;
+}
+
+/* ========================================
+   ERROR
+======================================== */
+
+.storage-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 11px 14px;
+  border: 1px solid #f1cccc;
+  border-radius: 10px;
+  background: #fff5f5;
+  color: #a93636;
+  font-size: 13px;
+}
+
+.storage-error button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ========================================
+   TABLE CARD
+======================================== */
+
+.storage-card {
+  overflow: hidden;
+  border: 1px solid #e9ebef;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.storage-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.storage-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+}
+
+.storage-table th {
+  padding: 13px 18px;
+  border-bottom: 1px solid #eceef2;
+  background: #fafbfc;
+  color: #858b96;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.storage-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f1f3;
+  color: #404650;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.storage-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.storage-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.storage-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+/* ========================================
+   LOCATION CELL
+======================================== */
+
+.storage-location-cell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 210px;
+}
+
+.storage-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 10px;
+  background: #f1f2f4;
+  color: #313640;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.storage-location-info {
+  min-width: 0;
+}
+
+.storage-location-info strong {
+  display: block;
+  overflow: hidden;
+  color: #242831;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.storage-location-info span {
+  display: block;
+  margin-top: 3px;
+  color: #9298a3;
+  font-size: 10px;
+}
+
+.storage-value {
+  color: #555c67;
+  font-weight: 600;
+}
+
+.storage-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  padding: 4px 7px;
+  border-radius: 6px;
+  background: #f4f5f7;
+  color: #414750;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.storage-date {
+  color: #888f9a;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   STATUS
+======================================== */
+
+.storage-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  padding: 5px 8px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.storage-status.active {
+  background: #eef8f1;
+  color: #32834d;
+}
+
+.storage-status.inactive {
+  background: #f1f2f4;
+  color: #7b818b;
+}
+
+.storage-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ========================================
+   ACTION
+======================================== */
+
+.storage-edit-btn {
+  border: 1px solid #e1e4e8;
+  border-radius: 7px;
+  padding: 6px 10px;
+  background: #fff;
+  color: #4d535e;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.storage-edit-btn:hover {
+  background: #f7f8f9;
+}
+
+/* ========================================
+   PAGINATION
+======================================== */
+
+.storage-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-top: 1px solid #eceef1;
+}
+
+.storage-pagination-info {
+  color: #858b96;
+  font-size: 12px;
+}
+
+.storage-pagination-info strong {
+  color: #404650;
+}
+
+.storage-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.storage-pagination-controls label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: 6px;
+}
+
+.storage-pagination-controls label span {
+  color: #8a909a;
+  font-size: 11px;
+}
+
+.storage-pagination-controls select {
+  height: 31px;
+  border: 1px solid #e0e3e7;
+  border-radius: 7px;
+  padding: 0 7px;
+  background: #fff;
+  color: #454b55;
+  font-size: 11px;
+  outline: none;
+}
+
+.storage-pagination-controls > button {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 1px solid #e0e3e7;
+  border-radius: 7px;
+  background: #fff;
+  color: #454b55;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.storage-pagination-controls > button:hover:not(:disabled) {
+  background: #f6f7f8;
+}
+
+.storage-pagination-controls > button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.storage-page-number {
+  min-width: 52px;
+  text-align: center;
+  color: #5d636e;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ========================================
+   STATES
+======================================== */
+
+.storage-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 330px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.storage-state strong {
+  margin-top: 12px;
+  color: #30343c;
+  font-size: 14px;
+}
+
+.storage-state > span {
+  margin-top: 5px;
+  color: #9298a2;
+  font-size: 12px;
+}
+
+.storage-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  background: #f2f3f5;
+  font-size: 24px;
+}
+
+.storage-state button {
+  margin-top: 17px;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 13px;
+  background: #171a21;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.storage-spinner {
+  width: 27px;
+  height: 27px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #252930;
+  border-radius: 50%;
+  animation: storage-spin 0.75s linear infinite;
+}
+
+@keyframes storage-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   MODAL FORM
+======================================== */
+
+.storage-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.storage-form-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.storage-form-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 11px;
+  background: #f1f2f4;
+  font-size: 20px;
+}
+
+.storage-form-intro h3 {
+  margin: 0;
+  color: #242831;
+  font-size: 15px;
+}
+
+.storage-form-intro p {
+  margin: 5px 0 0;
+  color: #888f9a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.storage-form-error {
+  padding: 10px 12px;
+  border: 1px solid #f0cccc;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #a33a3a;
+  font-size: 12px;
+}
+
+.storage-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.storage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.storage-field span {
+  color: #555b65;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.storage-field input {
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+  border: 1px solid #dfe2e7;
+  border-radius: 8px;
+  padding: 0 11px;
+  outline: none;
+  color: #292d35;
+  background: #fff;
+  font-size: 13px;
+  transition: border-color 0.15s ease;
+}
+
+.storage-field input:focus {
+  border-color: #969ca6;
+}
+
+.storage-field input::placeholder {
+  color: #b0b5bd;
+}
+
+.storage-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: #f6f7f8;
+}
+
+.storage-preview span {
+  color: #8b919b;
+  font-size: 11px;
+}
+
+.storage-preview strong {
+  color: #363b44;
+  font-size: 12px;
+  text-align: right;
+}
+
+.storage-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.storage-cancel-btn,
+.storage-submit-btn {
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.storage-cancel-btn {
+  border: 1px solid #dfe2e6;
+  background: #fff;
+  color: #5c626c;
+}
+
+.storage-submit-btn {
+  border: 0;
+  background: #171a21;
+  color: #fff;
+}
+
+.storage-submit-btn:disabled,
+.storage-cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1000px) {
+  .storage-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .storage-page-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .storage-add-btn {
+    justify-content: center;
+  }
+
+  .storage-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .storage-search {
+    width: 100%;
+  }
+
+  .storage-inactive-toggle {
+    justify-content: flex-start;
+  }
+
+  .storage-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .storage-pagination-controls {
+    justify-content: space-between;
+  }
+
+  .storage-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .storage-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .storage-page-header h1 {
+    font-size: 25px;
+  }
+
+  .storage-pagination-controls label {
+    margin-right: 0;
+  }
+}

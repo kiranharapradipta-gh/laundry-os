@@ -1,133 +1,100 @@
-import {
-  useState,
-} from "react";
+import type { FormEvent } from "react";
 
-import {
-  login,
-  type AuthUser,
-} from "../api/client";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
-import type {
-  FormEvent,
-} from "react";
+export default function Login() {
+  const { user, login } = useAuth();
 
-interface LoginProps {
-  onLogin: (user: AuthUser) => void;
-}
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-export default function Login({
-  onLogin,
-}: LoginProps) {
-  const [phone, setPhone] =
-    useState("");
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
-  const [password, setPassword] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
-
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    if (!phone || !password) {
-      setError(
-        "Nomor HP dan password wajib diisi"
-      );
+    setError("");
+
+    if (!phone.trim() || !password) {
+      setError("Nomor HP dan password wajib diisi.");
       return;
     }
 
-    setLoading(true);
-    setError("");
-
     try {
-      const result = await login(
-        phone,
-        password
-      );
+      setSubmitting(true);
 
-      onLogin(result.user);
-    } catch (error) {
+      await login(phone.trim(), password);
+    } catch (err) {
       setError(
-        error instanceof Error
-          ? error.message
-          : "Login gagal"
+        err instanceof Error
+          ? err.message
+          : "Login gagal.",
       );
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   }
 
   return (
     <main className="login-page">
       <section className="login-card">
-        <div className="login-header">
-          <h1>LaundryOS</h1>
-          <p>
-            Login untuk mengakses sistem
-          </p>
+        <div className="login-brand">
+          <div className="login-logo">L</div>
+
+          <div>
+            <h1>LaundryOS</h1>
+            <p>Kelola laundry lebih mudah.</p>
+          </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="login-form"
-        >
-          <div className="form-group">
-            <label htmlFor="phone">
-              Nomor HP
-            </label>
+        <form onSubmit={handleSubmit}>
+          <div className="form-field">
+            <label htmlFor="phone">Nomor HP</label>
 
             <input
               id="phone"
               type="tel"
-              placeholder="08xxxxxxxxxx"
               value={phone}
               onChange={(event) =>
                 setPhone(event.target.value)
               }
-              disabled={loading}
-              autoComplete="username"
+              placeholder="08xxxxxxxxxx"
+              autoComplete="tel"
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">
-              Password
-            </label>
+          <div className="form-field">
+            <label htmlFor="password">Password</label>
 
             <input
               id="password"
               type="password"
-              placeholder="Masukkan password"
               value={password}
               onChange={(event) =>
-                setPassword(
-                  event.target.value
-                )
+                setPassword(event.target.value)
               }
-              disabled={loading}
+              placeholder="Masukkan password"
               autoComplete="current-password"
             />
           </div>
 
           {error && (
-            <div className="login-error">
+            <div className="form-error">
               {error}
             </div>
           )}
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={submitting}
           >
-            {loading
-              ? "Memproses..."
-              : "Login"}
+            {submitting ? "Masuk..." : "Masuk"}
           </button>
         </form>
       </section>

@@ -7,6 +7,7 @@ import {
   getOrders,
   getOrderById,
   updateOrderStatus,
+  type GetOrdersOptions,
 } from "../services/order.service.js";
 
 // ========================================
@@ -225,20 +226,71 @@ export async function list(
   res: Response
 ) {
   try {
-    const orders = await getOrders(
-      req.user!.businessId
+    const search =
+      typeof req.query.search === "string"
+        ? req.query.search
+        : undefined;
+
+    const status =
+      typeof req.query.status === "string"
+        ? req.query.status
+        : undefined;
+
+    const pageValue =
+      typeof req.query.page === "string"
+        ? Number(req.query.page)
+        : 1;
+
+    const limitValue =
+      typeof req.query.limit === "string"
+        ? Number(req.query.limit)
+        : 20;
+
+    const page =
+      Number.isInteger(pageValue) &&
+      pageValue > 0
+        ? pageValue
+        : 1;
+
+    const limit =
+      Number.isInteger(limitValue) &&
+      limitValue > 0
+        ? Math.min(limitValue, 100)
+        : 20;
+
+    const options: GetOrdersOptions = {
+      page,
+      limit,
+    };
+
+    if (search !== undefined) {
+      options.search = search;
+    }
+
+    if (status !== undefined) {
+      options.status = status;
+    }
+
+    const result = await getOrders(
+      req.user!.businessId,
+      options
     );
 
     return res.json({
       success: true,
-      data: orders,
+      data: result.data,
+      meta: result.meta,
     });
   } catch (error) {
-    console.error("List orders error:", error);
+    console.error(
+      "List orders error:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
-      message: "Gagal mengambil data order",
+      message:
+        "Gagal mengambil data order",
     });
   }
 }

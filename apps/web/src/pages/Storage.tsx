@@ -1,56 +1,35 @@
+import { useEffect, useMemo, useState } from "react";
+import type {
+  CreateStorageInput,
+  StorageLocation,
+  UpdateStorageInput,
+} from "../types/storage";
 import {
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  createStorageLocation,
+  createStorage,
   getStorageLocations,
-  updateStorageLocation,
-  type StorageLocation,
-} from "../api/client";
+  updateStorage,
+} from "../api/storage.api";
+import "../styles/storage.css";
+import StorageTable from "../components/ui/storage/StorageTable";
+import StorageModal from "../components/ui/storage/StorageModal";
 
-interface StorageForm {
-  zone: string;
-  rack: string;
-  shelf: string;
-  slot: string;
-}
-
-const emptyForm: StorageForm = {
-  zone: "",
-  rack: "",
-  shelf: "",
-  slot: "",
-};
-
-function getLocationName(
-  location: StorageLocation
-) {
-  const parts = [
-    location.zone,
-    location.rack,
-    location.shelf,
-    location.slot,
-  ].filter(Boolean);
-
-  return parts.length > 0
-    ? parts.join(" / ")
-    : "Lokasi tanpa nama";
-}
+const PAGE_SIZE_OPTIONS = [5, 10, 20];
 
 export default function Storage() {
-  const [locations, setLocations] =
-    useState<StorageLocation[]>([]);
+  const [locations, setLocations] = useState<
+    StorageLocation[]
+  >([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-  const [saving, setSaving] =
+  const [search, setSearch] = useState("");
+  const [showInactive, setShowInactive] =
     useState(false);
 
-  const [error, setError] =
-    useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const [showModal, setShowModal] =
     useState(false);
@@ -58,23 +37,20 @@ export default function Storage() {
   const [editingLocation, setEditingLocation] =
     useState<StorageLocation | null>(null);
 
-  const [form, setForm] =
-    useState<StorageForm>(emptyForm);
-
-  async function loadLocations() {
+  async function loadStorage() {
     try {
       setLoading(true);
       setError("");
 
       const data =
-        await getStorageLocations();
+        await getStorageLocations(true);
 
       setLocations(data);
-    } catch (error) {
+    } catch (err) {
       setError(
-        error instanceof Error
-          ? error.message
-          : "Gagal mengambil lokasi storage"
+        err instanceof Error
+          ? err.message
+          : "Gagal mengambil data storage.",
       );
     } finally {
       setLoading(false);
@@ -82,142 +58,178 @@ export default function Storage() {
   }
 
   useEffect(() => {
-    loadLocations();
+    loadStorage();
   }, []);
+
+  const filteredLocations = useMemo(() => {
+    const keyword = search.trim().toLowerCase();
+
+    return locations.filter((location) => {
+      if (
+        !showInactive &&
+        !location.isActive
+      ) {
+        return false;
+      }
+
+      if (!keyword) return true;
+
+      return [
+        location.zone,
+        location.rack,
+        location.shelf,
+        location.slot,
+        location.id,
+      ]
+        .filter(Boolean)
+        .some((value) =>
+          String(value)
+            .toLowerCase()
+            .includes(keyword),
+        );
+    });
+  }, [locations, search, showInactive]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(
+      filteredLocations.length / pageSize,
+    ),
+  );
+
+  const paginatedLocations =
+    filteredLocations.slice(
+      (page - 1) * pageSize,
+      page * pageSize,
+    );
+
+  const activeCount = locations.filter(
+    (location) => location.isActive,
+  ).length;
+
+  const inactiveCount =
+    locations.length - activeCount;
 
   function openCreateModal() {
     setEditingLocation(null);
-    setForm(emptyForm);
-    setError("");
     setShowModal(true);
   }
 
   function openEditModal(
-    location: StorageLocation
+    location: StorageLocation,
   ) {
     setEditingLocation(location);
-
-    setForm({
-      zone: location.zone ?? "",
-      rack: location.rack ?? "",
-      shelf: location.shelf ?? "",
-      slot: location.slot ?? "",
-    });
-
-    setError("");
     setShowModal(true);
   }
 
   function closeModal() {
-    if (saving) {
-      return;
-    }
+    if (saving) return;
 
     setShowModal(false);
     setEditingLocation(null);
-    setForm(emptyForm);
-  }
-
-  function handleChange(
-    field: keyof StorageForm,
-    value: string
-  ) {
-    setForm((current) => ({
-      ...current,
-      [field]: value,
-    }));
   }
 
   async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
+    data:
+      | CreateStorageInput
+      | UpdateStorageInput,
   ) {
-    event.preventDefault();
-
-    const hasLocation =
-      form.zone.trim() ||
-      form.rack.trim() ||
-      form.shelf.trim() ||
-      form.slot.trim();
-
-    if (!hasLocation) {
-      setError(
-        "Minimal satu bagian lokasi harus diisi."
-      );
-      return;
-    }
+    setSaving(true);
 
     try {
-      setSaving(true);
-      setError("");
-
       if (editingLocation) {
-        await updateStorageLocation(
-          editingLocation.id,
-          {
-            zone: form.zone.trim(),
-            rack: form.rack.trim(),
-            shelf: form.shelf.trim(),
-            slot: form.slot.trim(),
-          }
+        const updated =
+          await updateStorage(
+            editingLocation.id,
+            data as UpdateStorageInput,
+          );
+
+        setLocations((current) =>
+          current.map((location) =>
+            location.id === updated.id
+              ? updated
+              : location,
+          ),
         );
       } else {
-        await createStorageLocation({
-          zone: form.zone.trim(),
-          rack: form.rack.trim(),
-          shelf: form.shelf.trim(),
-          slot: form.slot.trim(),
-        });
+        const created =
+          await createStorage(
+            data as CreateStorageInput,
+          );
+
+        setLocations((current) => [
+          created,
+          ...current,
+        ]);
       }
 
-      closeModal();
-      await loadLocations();
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Gagal menyimpan lokasi"
-      );
+      setShowModal(false);
+      setEditingLocation(null);
     } finally {
       setSaving(false);
     }
   }
 
-  async function handleToggleActive(
-    location: StorageLocation
+  async function handleToggle(
+    location: StorageLocation,
   ) {
+    const nextStatus = !location.isActive;
+
     try {
-      setError("");
+      const updated =
+        await updateStorage(location.id, {
+          isActive: nextStatus,
+        });
 
-      await updateStorageLocation(
-        location.id,
-        {
-          isActive: !location.isActive,
-        }
+      setLocations((current) =>
+        current.map((item) =>
+          item.id === updated.id
+            ? updated
+            : item,
+        ),
       );
-
-      await loadLocations();
-    } catch (error) {
+    } catch (err) {
       setError(
-        error instanceof Error
-          ? error.message
-          : "Gagal mengubah status lokasi"
+        err instanceof Error
+          ? err.message
+          : "Gagal mengubah status storage.",
       );
     }
   }
 
+  function handleSearch(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    setSearch(event.target.value);
+    setPage(1);
+  }
+
+  function handlePageSizeChange(
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) {
+    setPageSize(Number(event.target.value));
+    setPage(1);
+  }
+
   return (
-    <section className="storage-page">
+    <div className="storage-page">
       <div className="storage-page-header">
         <div>
-          <h1>Penyimpanan</h1>
+          <div className="storage-eyebrow">
+            INVENTORY
+          </div>
+
+          <h1>Storage</h1>
+
           <p>
-            Kelola lokasi penyimpanan laundry.
+            Kelola lokasi penyimpanan pakaian
+            pelanggan.
           </p>
         </div>
 
         <button
           type="button"
-          className="storage-add-button"
+          className="storage-add-btn"
           onClick={openCreateModal}
         >
           <span>+</span>
@@ -225,262 +237,234 @@ export default function Storage() {
         </button>
       </div>
 
-      {error && (
-        <div className="storage-error">
-          {error}
-        </div>
-      )}
-
-      {loading ? (
-        <div className="storage-empty">
-          Memuat lokasi...
-        </div>
-      ) : locations.length === 0 ? (
-        <div className="storage-empty">
-          <div className="storage-empty-icon">
-            🗄️
+      <div className="storage-stats">
+        <div className="storage-stat-card">
+          <div className="storage-stat-icon">
+            📦
           </div>
 
-          <h2>Belum ada lokasi</h2>
+          <div>
+            <span>Total Lokasi</span>
+            <strong>{locations.length}</strong>
+          </div>
+        </div>
 
-          <p>
-            Tambahkan lokasi penyimpanan
-            pertama untuk mulai mengatur
-            barang laundry.
-          </p>
+        <div className="storage-stat-card">
+          <div className="storage-stat-icon">
+            ✓
+          </div>
+
+          <div>
+            <span>Lokasi Aktif</span>
+            <strong>{activeCount}</strong>
+          </div>
+        </div>
+
+        <div className="storage-stat-card">
+          <div className="storage-stat-icon">
+            ◌
+          </div>
+
+          <div>
+            <span>Lokasi Nonaktif</span>
+            <strong>{inactiveCount}</strong>
+          </div>
+        </div>
+
+        <div className="storage-stat-card">
+          <div className="storage-stat-icon">
+            ◇
+          </div>
+
+          <div>
+            <span>Ditampilkan</span>
+            <strong>
+              {filteredLocations.length}
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="storage-toolbar">
+        <div className="storage-search">
+          <span>⌕</span>
+
+          <input
+            type="search"
+            value={search}
+            onChange={handleSearch}
+            placeholder="Cari zone, rak, shelf, slot..."
+          />
+        </div>
+
+        <label className="storage-inactive-toggle">
+          <input
+            type="checkbox"
+            checked={showInactive}
+            onChange={(event) => {
+              setShowInactive(
+                event.target.checked,
+              );
+              setPage(1);
+            }}
+          />
+
+          <span>
+            Tampilkan nonaktif
+          </span>
+        </label>
+      </div>
+
+      {error && (
+        <div className="storage-error">
+          <span>{error}</span>
 
           <button
             type="button"
-            className="storage-add-button"
-            onClick={openCreateModal}
+            onClick={() => setError("")}
           >
-            + Tambah Lokasi
+            ×
           </button>
         </div>
-      ) : (
-        <div className="storage-grid">
-          {locations.map((location) => (
-            <article
-              className={`storage-card ${
-                !location.isActive
-                  ? "inactive"
-                  : ""
-              }`}
-              key={location.id}
-            >
-              <div className="storage-card-top">
-                <div className="storage-icon">
-                  🗄️
-                </div>
-
-                <span
-                  className={`storage-status ${
-                    location.isActive
-                      ? "active"
-                      : "inactive"
-                  }`}
-                >
-                  {location.isActive
-                    ? "Aktif"
-                    : "Nonaktif"}
-                </span>
-              </div>
-
-              <h2>
-                {getLocationName(location)}
-              </h2>
-
-              <div className="storage-card-details">
-                {location.zone && (
-                  <div>
-                    <span>Zona</span>
-                    <strong>
-                      {location.zone}
-                    </strong>
-                  </div>
-                )}
-
-                {location.rack && (
-                  <div>
-                    <span>Rak</span>
-                    <strong>
-                      {location.rack}
-                    </strong>
-                  </div>
-                )}
-
-                {location.shelf && (
-                  <div>
-                    <span>Shelf</span>
-                    <strong>
-                      {location.shelf}
-                    </strong>
-                  </div>
-                )}
-
-                {location.slot && (
-                  <div>
-                    <span>Slot</span>
-                    <strong>
-                      {location.slot}
-                    </strong>
-                  </div>
-                )}
-              </div>
-
-              <div className="storage-card-actions">
-                <button
-                  type="button"
-                  onClick={() =>
-                    openEditModal(location)
-                  }
-                >
-                  Edit
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleToggleActive(
-                      location
-                    )
-                  }
-                >
-                  {location.isActive
-                    ? "Nonaktifkan"
-                    : "Aktifkan"}
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
       )}
 
-      {showModal && (
-        <div
-          className="storage-modal-overlay"
-          onClick={closeModal}
-        >
-          <div
-            className="storage-modal"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
-          >
-            <div className="storage-modal-header">
-              <div>
-                <h2>
-                  {editingLocation
-                    ? "Edit Lokasi"
-                    : "Tambah Lokasi"}
-                </h2>
-
-                <p>
-                  Tentukan posisi penyimpanan
-                  laundry.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                className="storage-modal-close"
-                onClick={closeModal}
-                disabled={saving}
-              >
-                ×
-              </button>
+      <div className="storage-card">
+        {loading ? (
+          <div className="storage-state">
+            <div className="storage-spinner" />
+            <strong>
+              Memuat storage...
+            </strong>
+            <span>
+              Tunggu sebentar.
+            </span>
+          </div>
+        ) : filteredLocations.length ===
+          0 ? (
+          <div className="storage-state">
+            <div className="storage-empty-icon">
+              📦
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="storage-form"
-            >
-              <label>
-                <span>Zona</span>
-                <input
-                  value={form.zone}
-                  onChange={(event) =>
-                    handleChange(
-                      "zone",
-                      event.target.value
-                    )
-                  }
-                  placeholder="Contoh: Zona A"
-                />
-              </label>
+            <strong>
+              {search
+                ? "Lokasi tidak ditemukan"
+                : "Belum ada lokasi storage"}
+            </strong>
 
-              <label>
-                <span>Rak</span>
-                <input
-                  value={form.rack}
-                  onChange={(event) =>
-                    handleChange(
-                      "rack",
-                      event.target.value
-                    )
-                  }
-                  placeholder="Contoh: Rak 01"
-                />
-              </label>
+            <span>
+              {search
+                ? "Coba gunakan kata kunci lain."
+                : "Tambahkan lokasi pertama untuk mulai mengatur storage."}
+            </span>
 
-              <label>
-                <span>Shelf</span>
-                <input
-                  value={form.shelf}
-                  onChange={(event) =>
-                    handleChange(
-                      "shelf",
-                      event.target.value
-                    )
-                  }
-                  placeholder="Contoh: Shelf 02"
-                />
-              </label>
+            {!search && (
+              <button
+                type="button"
+                onClick={openCreateModal}
+              >
+                + Tambah Lokasi
+              </button>
+            )}
+          </div>
+        ) : (
+          <>
+            <StorageTable
+              locations={paginatedLocations}
+              onEdit={openEditModal}
+              onToggle={handleToggle}
+            />
 
-              <label>
-                <span>Slot</span>
-                <input
-                  value={form.slot}
-                  onChange={(event) =>
-                    handleChange(
-                      "slot",
-                      event.target.value
-                    )
-                  }
-                  placeholder="Contoh: 03"
-                />
-              </label>
+            <div className="storage-pagination">
+              <div className="storage-pagination-info">
+                Menampilkan{" "}
+                <strong>
+                  {Math.min(
+                    (page - 1) * pageSize + 1,
+                    filteredLocations.length,
+                  )}
+                </strong>{" "}
+                –{" "}
+                <strong>
+                  {Math.min(
+                    page * pageSize,
+                    filteredLocations.length,
+                  )}
+                </strong>{" "}
+                dari{" "}
+                <strong>
+                  {filteredLocations.length}
+                </strong>
+              </div>
 
-              {error && (
-                <div className="storage-form-error">
-                  {error}
-                </div>
-              )}
+              <div className="storage-pagination-controls">
+                <label>
+                  <span>Per halaman</span>
 
-              <div className="storage-modal-actions">
+                  <select
+                    value={pageSize}
+                    onChange={
+                      handlePageSizeChange
+                    }
+                  >
+                    {PAGE_SIZE_OPTIONS.map(
+                      (size) => (
+                        <option
+                          key={size}
+                          value={size}
+                        >
+                          {size}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                </label>
+
                 <button
                   type="button"
-                  onClick={closeModal}
-                  disabled={saving}
+                  disabled={page <= 1}
+                  onClick={() =>
+                    setPage((current) =>
+                      Math.max(1, current - 1),
+                    )
+                  }
                 >
-                  Batal
+                  ‹
                 </button>
 
+                <span className="storage-page-number">
+                  {page} / {totalPages}
+                </span>
+
                 <button
-                  type="submit"
-                  disabled={saving}
+                  type="button"
+                  disabled={
+                    page >= totalPages
+                  }
+                  onClick={() =>
+                    setPage((current) =>
+                      Math.min(
+                        totalPages,
+                        current + 1,
+                      ),
+                    )
+                  }
                 >
-                  {saving
-                    ? "Menyimpan..."
-                    : editingLocation
-                    ? "Simpan Perubahan"
-                    : "Simpan"}
+                  ›
                 </button>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </section>
+            </div>
+          </>
+        )}
+      </div>
+
+      <StorageModal
+        open={showModal}
+        location={editingLocation}
+        loading={saving}
+        onClose={closeModal}
+        onSubmit={handleSubmit}
+      />
+    </div>
   );
 }

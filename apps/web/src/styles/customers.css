@@ -1,0 +1,379 @@
+/* ========================================
+   CUSTOMERS
+======================================== */
+
+.customers-page {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.customers-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.customer-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #e8ebf0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(28, 39, 60, 0.035);
+}
+
+.customer-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: #f1f3f7;
+  font-size: 17px;
+}
+
+.customer-stat span,
+.customer-stat strong {
+  display: block;
+}
+
+.customer-stat span {
+  margin-bottom: 4px;
+  color: #8a93a1;
+  font-size: 12px;
+}
+
+.customer-stat strong {
+  color: #202a3b;
+  font-size: 20px;
+}
+
+/* ========================================
+   CARD
+======================================== */
+
+.customers-card {
+  overflow: hidden;
+  border: 1px solid #e8ebf0;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(28, 39, 60, 0.035);
+}
+
+.customers-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.customers-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: min(470px, 100%);
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #e0e4ea;
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+.customers-search > span {
+  color: #929aa8;
+  font-size: 20px;
+}
+
+.customers-search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  color: #263143;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+}
+
+.customers-search button {
+  width: 25px;
+  height: 25px;
+  border: 0;
+  border-radius: 50%;
+  background: #e9ecf1;
+  color: #707887;
+  cursor: pointer;
+}
+
+/* ========================================
+   TABLE
+======================================== */
+
+.customers-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.customers-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.customers-table th {
+  padding: 13px 17px;
+  border-bottom: 1px solid #edf0f4;
+  background: #fafbfc;
+  color: #929aa8;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.customers-table td {
+  padding: 15px 17px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.customers-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.customers-table tbody tr:hover {
+  background: #fafbfd;
+}
+
+.customer-table-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.customer-table-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #eef1f5;
+  color: #4a5568;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.customer-table-profile strong,
+.customer-table-profile span {
+  display: block;
+}
+
+.customer-table-profile strong {
+  color: #2b3444;
+  font-size: 13px;
+}
+
+.customer-table-profile span {
+  margin-top: 3px;
+  color: #a0a7b3;
+  font-size: 10px;
+}
+
+.customer-phone,
+.customer-created {
+  color: #667085;
+  font-size: 12px;
+}
+
+.nickname-pill {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #596273;
+  background: #f1f3f6;
+  font-size: 11px;
+}
+
+.muted-text {
+  color: #b1b7c0;
+}
+
+.customer-edit-button {
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid #e0e4ea;
+  border-radius: 8px;
+  color: #596273;
+  background: #fff;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.customer-edit-button:hover {
+  background: #f6f7f9;
+}
+
+/* ========================================
+   LOADING
+======================================== */
+
+.customers-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 330px;
+  color: #8b94a2;
+  font-size: 13px;
+}
+
+/* ========================================
+   PAGINATION
+======================================== */
+
+.customers-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px 17px;
+  color: #858d9a;
+  font-size: 12px;
+}
+
+.customers-pagination strong {
+  color: #475467;
+}
+
+.customers-pagination .pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.customers-pagination select {
+  height: 34px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #e1e5ea;
+  border-radius: 8px;
+  color: #596273;
+  background: #fff;
+  font: inherit;
+  font-size: 11px;
+}
+
+.customers-pagination button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e1e5ea;
+  border-radius: 8px;
+  color: #596273;
+  background: #fff;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.customers-pagination button:disabled {
+  color: #c2c7cf;
+  cursor: not-allowed;
+}
+
+.customers-pagination .pagination-controls > span {
+  min-width: 50px;
+  text-align: center;
+}
+
+/* ========================================
+   CUSTOMER MODAL
+======================================== */
+
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.customer-form-intro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  padding: 13px;
+  border-radius: 11px;
+  background: #f7f8fa;
+}
+
+.customer-form-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: #e9ecf1;
+  color: #4a5568;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.customer-form-intro strong,
+.customer-form-intro span {
+  display: block;
+}
+
+.customer-form-intro strong {
+  color: #344054;
+  font-size: 13px;
+}
+
+.customer-form-intro span {
+  margin-top: 3px;
+  color: #8b94a2;
+  font-size: 11px;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 700px) {
+  .customers-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .customers-toolbar {
+    align-items: stretch;
+  }
+
+  .customers-search {
+    width: 100%;
+  }
+
+  .customers-pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .customers-pagination .pagination-controls {
+    width: 100%;
+  }
+
+  .customers-pagination select {
+    flex: 1;
+  }
+}
