@@ -22,12 +22,44 @@ export async function getStorageLocations(
   return prisma.storageLocation.findMany({
     where: {
       businessId,
-
       ...(includeInactive
         ? {}
         : {
             isActive: true,
           }),
+    },
+
+    include: {
+      assignments: {
+        where: {
+          releasedAt: null,
+        },
+
+        orderBy: {
+          assignedAt: "desc",
+        },
+
+        take: 1,
+
+        include: {
+          order: {
+            select: {
+              id: true,
+              orderNumber: true,
+              status: true,
+
+              customer: {
+                select: {
+                  id: true,
+                  name: true,
+                  nickname: true,
+                  phone: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
 
     orderBy: {

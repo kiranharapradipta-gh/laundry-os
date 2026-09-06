@@ -26,6 +26,10 @@ function getInitial(location: StorageLocation) {
   );
 }
 
+function getActiveAssignment(location: StorageLocation) {
+  return location.assignments?.[0] ?? null;
+}
+
 export default function StorageTable({
   locations,
   onEdit,
@@ -42,6 +46,7 @@ export default function StorageTable({
             <th>Shelf</th>
             <th>Slot</th>
             <th>Status</th>
+            <th>Penggunaan</th>
             <th>Dibuat</th>
             <th>Aksi</th>
           </tr>
@@ -105,6 +110,40 @@ export default function StorageTable({
                     ? "Aktif"
                     : "Nonaktif"}
                 </button>
+              </td>
+
+              <td>
+                {(() => {
+                  const assignment = getActiveAssignment(location);
+
+                  if (!assignment) {
+                    return (
+                      <div className="storage-occupancy empty">
+                        <span className="storage-occupancy-dot" />
+                        <div>
+                          <strong>Kosong</strong>
+                          <span>Belum ada order</span>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="storage-occupancy occupied">
+                      <span className="storage-occupancy-dot" />
+
+                      <div>
+                        <strong>{assignment.order.orderNumber}</strong>
+
+                        <span>
+                          {assignment.order.customer?.nickname ||
+                            assignment.order.customer?.name ||
+                            "Customer"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
               </td>
 
               <td>

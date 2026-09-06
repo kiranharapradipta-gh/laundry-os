@@ -1,3 +1,23 @@
+export interface StorageCustomer {
+  id: string;
+  name: string;
+  nickname?: string | null;
+  phone: string;
+}
+
+export interface StorageOrder {
+  id: string;
+  orderNumber: string;
+  status: string;
+  customer?: StorageCustomer | null;
+}
+
+export interface StorageAssignment {
+  id: string;
+  assignedAt: string;
+  order: StorageOrder;
+}
+
 export interface StorageLocation {
   id: string;
   businessId: string;
@@ -8,7 +28,10 @@ export interface StorageLocation {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+
+  assignments?: StorageAssignment[];
 }
+
 
 export interface CreateStorageInput {
   zone?: string;
@@ -24,3 +47,16 @@ export interface UpdateStorageInput {
   slot?: string;
   isActive?: boolean;
 }
+
+// export interface StorageOccupancy {
+//   orderId: string;
+//   orderNumber: string;
+//   customerName: string;
+//   assignedAt: string;
+// }
+
+// export interface StorageLocationWithOccupancy
+//   extends StorageLocation {
+//   occupancy?: StorageOccupancy | null;
+// }
+

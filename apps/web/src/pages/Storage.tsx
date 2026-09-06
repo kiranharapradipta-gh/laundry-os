@@ -16,26 +16,16 @@ import StorageModal from "../components/storage/StorageModal";
 const PAGE_SIZE_OPTIONS = [5, 10, 20];
 
 export default function Storage() {
-  const [locations, setLocations] = useState<
-    StorageLocation[]
-  >([]);
-
+  const [locations, setLocations] = useState<StorageLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-
   const [search, setSearch] = useState("");
-  const [showInactive, setShowInactive] =
-    useState(false);
-
+  const [showInactive, setShowInactive] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
-  const [showModal, setShowModal] =
-    useState(false);
-
-  const [editingLocation, setEditingLocation] =
-    useState<StorageLocation | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [editingLocation, setEditingLocation] = useState<StorageLocation | null>(null);
 
   async function loadStorage() {
     try {
@@ -65,14 +55,13 @@ export default function Storage() {
     const keyword = search.trim().toLowerCase();
 
     return locations.filter((location) => {
-      if (
-        !showInactive &&
-        !location.isActive
-      ) {
-        return false;
+      const query = search.trim().toLowerCase();
+
+      if (!query) {
+        return true;
       }
 
-      if (!keyword) return true;
+      const assignment = location.assignments?.[0];
 
       return [
         location.zone,
@@ -80,12 +69,16 @@ export default function Storage() {
         location.shelf,
         location.slot,
         location.id,
+
+        assignment?.order?.orderNumber,
+
+        assignment?.order?.customer?.name,
+        assignment?.order?.customer?.nickname,
+        assignment?.order?.customer?.phone,
       ]
         .filter(Boolean)
         .some((value) =>
-          String(value)
-            .toLowerCase()
-            .includes(keyword),
+          String(value).toLowerCase().includes(keyword),
         );
     });
   }, [locations, search, showInactive]);
@@ -109,6 +102,14 @@ export default function Storage() {
 
   const inactiveCount =
     locations.length - activeCount;
+
+  const occupiedCount = locations.filter(
+    (location) =>
+      (location.assignments?.length ?? 0) > 0,
+  ).length;
+
+  const emptyCount =
+    locations.length - occupiedCount;
 
   function openCreateModal() {
     setEditingLocation(null);
@@ -162,6 +163,8 @@ export default function Storage() {
           ...current,
         ]);
       }
+
+      await loadStorage();
 
       setShowModal(false);
       setEditingLocation(null);
@@ -268,6 +271,28 @@ export default function Storage() {
           <div>
             <span>Lokasi Nonaktif</span>
             <strong>{inactiveCount}</strong>
+          </div>
+        </div>
+
+        <div className="storage-stat-card">
+          <div className="storage-stat-icon">
+            ●
+          </div>
+
+          <div>
+            <span>Terisi</span>
+            <strong>{occupiedCount}</strong>
+          </div>
+        </div>
+
+        <div className="storage-stat-card">
+          <div className="storage-stat-icon">
+            ○
+          </div>
+
+          <div>
+            <span>Kosong</span>
+            <strong>{emptyCount}</strong>
           </div>
         </div>
 
