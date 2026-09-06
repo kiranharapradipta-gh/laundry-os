@@ -33,6 +33,21 @@ function createItem(): FormItem {
   };
 }
 
+function getActiveAssignment(location: StorageLocation) {
+  return location.assignments?.[0] ?? null;
+}
+
+function getStorageLabel(location: StorageLocation) {
+  return [
+    location.zone,
+    location.rack,
+    location.shelf,
+    location.slot,
+  ]
+    .filter(Boolean)
+    .join(" / ");
+}
+
 export default function OrderModal({
   open,
   customers,
@@ -405,21 +420,28 @@ export default function OrderModal({
 
                 {storageLocations
                   .filter((location) => location.isActive)
-                  .map((location) => (
-                    <option
-                      key={location.id}
-                      value={location.id}
-                    >
-                      {[
-                        location.zone,
-                        location.rack,
-                        location.shelf,
-                        location.slot,
-                      ]
-                        .filter(Boolean)
-                        .join(" / ")}
-                    </option>
-                  ))}
+                  .map((location) => {
+                    const assignment = getActiveAssignment(location);
+                    const occupied = Boolean(assignment);
+
+                    const customer =
+                      assignment?.order.customer?.nickname ||
+                      assignment?.order.customer?.name ||
+                      "Customer";
+
+                    return (
+                      <option
+                        key={location.id}
+                        value={location.id}
+                        disabled={occupied}
+                      >
+                        {getStorageLabel(location)}
+                        {occupied
+                          ? ` — Terisi (${assignment?.order.orderNumber} • ${customer})`
+                          : " — Kosong"}
+                      </option>
+                    );
+                  })}
               </select>
             </label>
 

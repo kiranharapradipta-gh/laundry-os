@@ -99,7 +99,28 @@ export async function createOrder(
 
     if (!storage) {
       throw new Error(
-        "Storage location tidak ditemukan atau tidak aktif"
+        "Storage location tidak ditemukan atau tidak aktif",
+      );
+    }
+
+    const activeAssignment =
+      await prisma.storageAssignment.findFirst({
+        where: {
+          storageLocationId: input.storageLocationId,
+          releasedAt: null,
+        },
+        include: {
+          order: {
+            select: {
+              orderNumber: true,
+            },
+          },
+        },
+      });
+
+    if (activeAssignment) {
+      throw new Error(
+        `Storage location sedang digunakan oleh order ${activeAssignment.order.orderNumber}`,
       );
     }
   }
