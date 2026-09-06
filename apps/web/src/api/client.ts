@@ -14,10 +14,12 @@ async function request<T>(
     options.headers
   );
 
-  headers.set(
-    "Content-Type",
-    "application/json"
-  );
+  if (!(options.body instanceof FormData)) {
+    headers.set(
+      "Content-Type",
+      "application/json"
+    );
+  }
 
   if (token) {
     headers.set(
@@ -430,6 +432,54 @@ export async function getStorageLocations() {
   return response.data;
 }
 
+export interface CreateStorageLocationInput {
+  zone?: string;
+  rack?: string;
+  shelf?: string;
+  slot?: string;
+}
+
+export interface UpdateStorageLocationInput {
+  zone?: string;
+  rack?: string;
+  shelf?: string;
+  slot?: string;
+  isActive?: boolean;
+}
+
+export async function createStorageLocation(
+  input: CreateStorageLocationInput
+) {
+  const response =
+    await request<ApiResponse<StorageLocation>>(
+      "/api/storage",
+      {
+        method: "POST",
+        body: JSON.stringify(input),
+      }
+    );
+
+  return response.data;
+}
+
+export async function updateStorageLocation(
+  storageId: string,
+  input: UpdateStorageLocationInput
+) {
+  const response =
+    await request<ApiResponse<StorageLocation>>(
+      `/api/storage/${encodeURIComponent(
+        storageId
+      )}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(input),
+      }
+    );
+
+  return response.data;
+}
+
 // =========================
 // CREATE ORDER
 // =========================
@@ -462,4 +512,124 @@ export async function createOrder(
     );
 
   return response.data;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export interface ItemPhoto {
+  id: string;
+  url?: string;
+  path?: string;
+  createdAt: string;
+}
+
+export async function getItemPhotos(
+  orderId: string,
+  itemId: string
+) {
+  const response =
+    await request<ApiResponse<ItemPhoto[]>>(
+      `/api/orders/${encodeURIComponent(
+        orderId
+      )}/items/${encodeURIComponent(
+        itemId
+      )}/photos`
+    );
+
+  return response.data;
+}
+
+export async function uploadItemPhoto(
+  orderId: string,
+  itemId: string,
+  file: File
+) {
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  const response =
+    await request<ApiResponse<ItemPhoto>>(
+      `/api/orders/${encodeURIComponent(
+        orderId
+      )}/items/${encodeURIComponent(
+        itemId
+      )}/photos`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+  return response.data;
+}
+
+export async function deleteItemPhoto(
+  orderId: string,
+  itemId: string,
+  photoId: string
+) {
+  const response =
+    await request<ApiResponse<null>>(
+      `/api/orders/${encodeURIComponent(
+        orderId
+      )}/items/${encodeURIComponent(
+        itemId
+      )}/photos/${encodeURIComponent(
+        photoId
+      )}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+  return response;
 }

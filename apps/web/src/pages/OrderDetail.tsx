@@ -1,11 +1,14 @@
 import {
   useEffect,
+  useRef,
   useState,
+  type ChangeEvent,
 } from "react";
 
 import {
   getOrderById,
   updateOrderStatus,
+  uploadItemPhoto,
   type Order,
 } from "../api/client";
 
@@ -72,17 +75,111 @@ export default function OrderDetail({
   orderId,
   onBack,
 }: OrderDetailProps) {
-  const [order, setOrder] =
-    useState<Order | null>(null);
+  // const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
+  const galleryInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState("");
 
-  const [updating, setUpdating] =
-    useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
+  // const [previewFile, setPreviewFile] = useState<File | null>(null);
+  const [showPhotoSource, setShowPhotoSource] = useState(false);
+  const [showPhotoFullscreen, setShowPhotoFullscreen] = useState(false);
+  const [uploadingItemId, setUploadingItemId] = useState<string | null>(null);
 
-  const [error, setError] =
-    useState("");
+  function handleAddItemPhoto(itemId: string) {
+    setSelectedItemId(itemId);
+    setShowPhotoSource(true);
+  }
+
+  function handleTakePhoto() {
+    setShowPhotoSource(false);
+
+    setTimeout(() => {
+      cameraInputRef.current?.click();
+    }, 100);
+  }
+
+  function handleSelectPhoto() {
+    setShowPhotoSource(false);
+
+    setTimeout(() => {
+      galleryInputRef.current?.click();
+    }, 100);
+  }
+
+  async function handleItemPhotoChange(
+    event: ChangeEvent<HTMLInputElement>
+  ) {
+    const file = event.target.files?.[0];
+
+    if (!file || !selectedItemId || !order) {
+      return;
+    }
+
+    try {
+      setError("");
+
+      // Buat preview lokal terlebih dahulu
+      const previewUrl =
+        URL.createObjectURL(file);
+
+      setPreviewPhoto(previewUrl);
+
+      // Langsung tampilkan fullscreen preview
+      setShowPhotoFullscreen(true);
+
+      // Upload ke backend
+      setUploadingItemId(selectedItemId);
+
+      await uploadItemPhoto(
+        order.id,
+        selectedItemId,
+        file
+      );
+
+      // Ambil order terbaru supaya URL signed muncul
+      const updated =
+        await getOrderById(order.id);
+
+      setOrder(updated);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Gagal mengupload foto"
+      );
+
+      setPreviewPhoto(null);
+      setShowPhotoFullscreen(false);
+    } finally {
+      setUploadingItemId(null);
+      event.target.value = "";
+    }
+  }
+
+  function handleRetakePhoto() {
+    setShowPhotoFullscreen(false);
+
+    setTimeout(() => {
+      cameraInputRef.current?.click();
+    }, 100);
+  }
+
+  function handleClosePhotoFullscreen() {
+    setShowPhotoFullscreen(false);
+
+    if (previewPhoto) {
+      URL.revokeObjectURL(previewPhoto);
+    }
+
+    setPreviewPhoto(null);
+    setSelectedItemId(null);
+  }
 
   async function loadOrder() {
     try {
@@ -170,6 +267,7 @@ export default function OrderDetail({
   if (error && !order) {
     return (
       <main className="order-detail-page">
+
         <button
           type="button"
           className="back-button"
@@ -215,6 +313,24 @@ export default function OrderDetail({
 
   return (
     <main className="order-detail-page">
+      
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        style={{ display: "none" }}
+        onChange={handleItemPhotoChange}
+      />
+
+      <input
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleItemPhotoChange}
+      />
+
       <header className="order-detail-header">
         <button
           type="button"
@@ -336,13 +452,6 @@ export default function OrderDetail({
               {order.paymentStatus}
             </strong>
           </div>
-          
-          <div>
-            <span>Catatan: </span>
-            <strong>
-              {order.notes}
-            </strong>
-          </div>
         </div>
       </section>
 
@@ -411,35 +520,55 @@ export default function OrderDetail({
                     </div>
                   )}
 
-                  {item.photos &&
-                    item.photos.length >
-                      0 && (
-                      <div className="detail-item-photos">
-                        {item.photos.map(
-                          (photo) => (
-                            <div
-                              className="item-photo"
-                              key={photo.id}
-                            >
-                              {photo.url ? (
-                                <img
-                                  src={
-                                    photo.url
-                                  }
-                                  alt={
-                                    item.description
-                                  }
-                                />
-                              ) : (
-                                <span>
-                                  📷
-                                </span>
-                              )}
-                            </div>
-                          )
-                        )}
-                      </div>
-                    )}
+                  <div className="detail-item-photos-section">
+                    <div className="detail-item-photos">
+                      {item.photos?.map((photo) => (
+                        <button
+                          type="button"
+                          className="item-photo"
+                          key={photo.id}
+                          onClick={() => {
+                            if (photo.url) {
+                              setPreviewPhoto(photo.url);
+                              setSelectedItemId(item.id);
+                              setShowPhotoFullscreen(true);
+                            }
+                          }}
+                        >
+                          {photo.url ? (
+                            <img
+                              src={photo.url}
+                              alt={item.description}
+                            />
+                          ) : (
+                            <span>📷</span>
+                          )}
+                        </button>
+                      ))}
+
+                      <button
+                        type="button"
+                        className="item-photo-add"
+                        onClick={() =>
+                          handleAddItemPhoto(item.id)
+                        }
+                        disabled={
+                          uploadingItemId === item.id
+                        }
+                      >
+                        <span className="item-photo-add-icon">
+                          📷
+                        </span>
+
+                        <span className="item-photo-add-text">
+                          {uploadingItemId === item.id
+                            ? "Mengupload..."
+                            : "Tambah Foto"}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  
                 </div>
               </article>
             )
@@ -592,6 +721,104 @@ export default function OrderDetail({
             )}
           </div>
         </section>
+      )}
+
+      {showPhotoSource && (
+        <div
+          className="photo-source-overlay"
+          onClick={() =>
+            setShowPhotoSource(false)
+          }
+        >
+          <div
+            className="photo-source-modal"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <div className="photo-source-header">
+              <h3>Tambah Foto</h3>
+
+              <button
+                type="button"
+                className="photo-source-close"
+                onClick={() =>
+                  setShowPhotoSource(false)
+                }
+              >
+                ×
+              </button>
+            </div>
+
+            <button
+              type="button"
+              className="photo-source-button"
+              onClick={handleTakePhoto}
+            >
+              <span>📷</span>
+
+              <div>
+                <strong>Ambil Foto</strong>
+                <small>
+                  Gunakan kamera perangkat
+                </small>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              className="photo-source-button"
+              onClick={handleSelectPhoto}
+            >
+              <span>🖼️</span>
+
+              <div>
+                <strong>Pilih dari Galeri</strong>
+                <small>
+                  Pilih foto yang sudah tersimpan
+                </small>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showPhotoFullscreen && previewPhoto && (
+        <div className="photo-fullscreen-overlay">
+          <div className="photo-fullscreen-content">
+            <img
+              src={previewPhoto}
+              alt="Preview foto item"
+              className="photo-fullscreen-image"
+            />
+
+            <div className="photo-fullscreen-actions">
+              <button
+                type="button"
+                className="photo-fullscreen-button"
+                onClick={handleRetakePhoto}
+                disabled={
+                  uploadingItemId !== null
+                }
+              >
+                📷
+              </button>
+
+              <button
+                type="button"
+                className="photo-fullscreen-button photo-fullscreen-ok"
+                onClick={
+                  handleClosePhotoFullscreen
+                }
+                disabled={
+                  uploadingItemId !== null
+                }
+              >
+                ✓
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );

@@ -104,7 +104,7 @@ export default function Pickup() {
 
   return (
     <main className="pickup-page">
-      <header className="pickup-header">
+      {/* <header className="pickup-header">
         <div>
           <h1>Pickup Order</h1>
 
@@ -113,7 +113,7 @@ export default function Pickup() {
             mengambil pesanan.
           </p>
         </div>
-      </header>
+      </header> */}
 
       {error && (
         <div className="pickup-error">
@@ -123,24 +123,23 @@ export default function Pickup() {
       )}
 
       {scanning && (
-        <section className="scanner-card">
-          <div className="scanner-title">
-            <span>📷</span>
+        <QRScanner onScan={handleScan} />
+        // <section className="scanner-card">
+        //   <div className="scanner-title">
+        //     <span>📷</span>
 
-            <div>
-              <h2>Scan QR Order</h2>
+        //     <div>
+        //       <h2>Scan QR Order</h2>
 
-              <p>
-                Arahkan kamera ke QR yang
-                diberikan customer.
-              </p>
-            </div>
-          </div>
+        //       <p>
+        //         Arahkan kamera ke QR yang
+        //         diberikan customer.
+        //       </p>
+        //     </div>
+        //   </div>
 
-          <QRScanner
-            onScan={handleScan}
-          />
-        </section>
+        //   <QRScanner onScan={handleScan} />
+        // </section>
       )}
 
       {loading && (
