@@ -1,17 +1,23 @@
+import { Card, EmptyState } from "../../components/ui";
+
 export function Settings() {
   return (
     <section className="page">
-      <div className="page-heading">
+      <div className="page-header">
         <div>
           <h2>Settings</h2>
-          <p>Manage your laundry application settings.</p>
+          <p>
+            Manage your laundry application settings.
+          </p>
         </div>
       </div>
 
-      <div className="dashboard-placeholder">
-        <span>Settings</span>
-        <strong>Ready for Phase 9</strong>
-      </div>
+      <Card>
+        <EmptyState
+          title="Settings"
+          description="Ready for Phase 9"
+        />
+      </Card>
     </section>
   );
 }

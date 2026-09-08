@@ -1,0 +1,102 @@
+/* ========================================
+   AUTH / LOGIN
+======================================== */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--bg);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 12px 32px rgba(16, 24, 40, 0.06),
+    0 2px 6px rgba(16, 24, 40, 0.03);
+}
+
+.login-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.login-logo {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.login-header h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 22px;
+  line-height: 30px;
+}
+
+.login-header p {
+  margin: 7px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-form .ui-button {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.login-error {
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fef2f2;
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.login-footer {
+  margin-top: 24px;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 11px;
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    align-items: flex-start;
+    padding: 18px 14px;
+  }
+
+  .login-card {
+    margin-top: 40px;
+    padding: 24px 20px;
+    border-radius: var(--radius-md);
+  }
+
+  .login-header {
+    margin-bottom: 24px;
+  }
+}

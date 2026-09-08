@@ -220,7 +220,7 @@ export function Orders() {
   ];
 
   return (
-    <div className="page orders-page">
+    <div className="page">
       <div className="page-header">
         <div>
           <h2>Orders</h2>
@@ -238,20 +238,20 @@ export function Orders() {
         </Button>
       </div>
 
-      <Card className="orders-toolbar">
+      <Card>
         <form
-          className="orders-search"
+          className="toolbar"
           onSubmit={handleSearchSubmit}
         >
-          <Input
-            placeholder="Cari nomor order, nama, atau nomor HP..."
-            value={searchInput}
-            onChange={(event) =>
-              setSearchInput(
-                event.target.value,
-              )
-            }
-          />
+          <div className="toolbar-main">
+            <Input
+              placeholder="Cari nomor order, nama, atau nomor HP..."
+              value={searchInput}
+              onChange={(event) =>
+                setSearchInput(event.target.value)
+              }
+            />
+          </div>
 
           <Button
             type="submit"
@@ -259,25 +259,23 @@ export function Orders() {
           >
             Cari
           </Button>
-        </form>
 
-        <div className="orders-filter">
-          <Select
-            label="Status"
-            value={status}
-            options={STATUS_OPTIONS}
-            onChange={(event) =>
-              handleStatusChange(
-                event.target.value,
-              )
-            }
-          />
-        </div>
+          <div className="toolbar-field">
+            <Select
+              label="Status"
+              value={status}
+              options={STATUS_OPTIONS}
+              onChange={(event) =>
+                handleStatusChange(event.target.value)
+              }
+            />
+          </div>
+        </form>
       </Card>
 
       {error && (
-        <Card className="orders-error">
-          <div>
+        <Card className="page-error">
+          <div className="page-error-content">
             <strong>
               Gagal memuat orders
             </strong>
@@ -294,14 +292,14 @@ export function Orders() {
         </Card>
       )}
 
-      <Card className="orders-card">
-        <div className="orders-card-header">
-          <div>
+      <Card className="no-padding">
+        <div className="section-header table-section-header">
+          <div className="section-header-content">
             <h3>Daftar Orders</h3>
 
-            <span>
+            <p>
               {total} total order
-            </span>
+            </p>
           </div>
         </div>
 
@@ -322,19 +320,16 @@ export function Orders() {
           }
         />
 
-        {!loading &&
-          totalPages > 0 && (
-            <Pagination
-              page={page}
-              totalPages={totalPages}
-              total={total}
-              limit={limit}
-              onPageChange={setPage}
-              onLimitChange={
-                handleLimitChange
-              }
-            />
-          )}
+        {!loading && totalPages > 0 && (
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            total={total}
+            limit={limit}
+            onPageChange={setPage}
+            onLimitChange={handleLimitChange}
+          />
+        )}
       </Card>
     </div>
   );

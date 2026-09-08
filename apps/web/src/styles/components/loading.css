@@ -1,0 +1,35 @@
+.ui-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 160px;
+
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.ui-loading-text {
+  line-height: 1.4;
+}
+
+.ui-spinner {
+  width: 20px;
+  height: 20px;
+
+  flex: 0 0 20px;
+
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+
+  animation: ui-spinner-rotate 0.7s linear infinite;
+}
+
+@keyframes ui-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

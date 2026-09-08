@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   Button,
   Card,
   Input,
+  Loading,
   Select,
 } from "../../components/ui";
 
-import { createService } from "../../services/api/services";
-import type { CreateServiceInput } from "../../types/service";
+import {
+  getService,
+  updateService,
+} from "../../services/api/services";
+
+import type { UpdateServiceInput } from "../../types/service";
 
 const UNIT_OPTIONS = [
   { value: "kg", label: "Kg" },
@@ -20,21 +25,63 @@ const UNIT_OPTIONS = [
   { value: "liter", label: "Liter" },
 ];
 
-export function CreateService() {
+const STATUS_OPTIONS = [
+  { value: "ACTIVE", label: "Aktif" },
+  { value: "INACTIVE", label: "Nonaktif" },
+];
+
+export function ServiceEdit() {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [unit, setUnit] = useState("kg");
+  const [status, setStatus] = useState("ACTIVE");
 
   const [errors, setErrors] = useState<{
     name?: string;
     price?: string;
   }>({});
 
-  const [submitError, setSubmitError] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  const loadService = useCallback(async () => {
+    if (!id) {
+      setError("ID service tidak ditemukan.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const service = await getService(id);
+
+      setName(service.name);
+      setDescription(service.description ?? "");
+      setPrice(String(service.price));
+      setUnit(service.unit ?? "kg");
+      setStatus(service.isActive ? "ACTIVE" : "INACTIVE");
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Gagal mengambil data service.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    void loadService();
+  }, [loadService]);
 
   function validate() {
     const nextErrors: {
@@ -68,38 +115,78 @@ export function CreateService() {
   ) {
     event.preventDefault();
 
-    if (!validate()) {
+    if (!id || !validate()) {
       return;
     }
 
-    const input: CreateServiceInput = {
+    const input: UpdateServiceInput = {
       name: name.trim(),
       price: Number(price),
       unit,
+      isActive: status === "ACTIVE",
     };
 
     const cleanDescription = description.trim();
 
     if (cleanDescription) {
       input.description = cleanDescription;
+    } else {
+      input.description = "";
     }
 
     try {
       setSaving(true);
-      setSubmitError("");
+      setError("");
 
-      await createService(input);
+      await updateService(id, input);
 
       navigate("/services");
     } catch (err) {
-      setSubmitError(
+      setError(
         err instanceof Error
           ? err.message
-          : "Gagal membuat service.",
+          : "Gagal memperbarui service.",
       );
     } finally {
       setSaving(false);
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="page">
+        <Card>
+          <Loading text="Memuat service..." />
+        </Card>
+      </div>
+    );
+  }
+
+  if (error && !name) {
+    return (
+      <div className="page">
+        <Card className="page-error">
+          <div className="page-error-content">
+            <strong>Gagal memuat service</strong>
+            <p>{error}</p>
+          </div>
+
+          <Button
+            variant="secondary"
+            onClick={() => void loadService()}
+          >
+            Coba Lagi
+          </Button>
+
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/services")}
+          >
+            Kembali
+          </Button>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -114,26 +201,22 @@ export function CreateService() {
             ← Kembali ke Services
           </button>
 
-          <h1>Tambah Service</h1>
+          <h1>Edit Service</h1>
 
           <p>
-            Tambahkan layanan baru yang dapat digunakan
-            saat membuat order.
+            Perbarui informasi dan status layanan laundry.
           </p>
         </div>
       </div>
 
       <Card className="form-card">
-        <form
-          className="form"
-          onSubmit={handleSubmit}
-        >
+        <form className="form" onSubmit={handleSubmit}>
           <div className="form-section">
             <div className="form-section-title">
               <h2>Informasi Service</h2>
 
               <p>
-                Isi informasi dasar layanan laundry.
+                Ubah informasi layanan sesuai kebutuhan.
               </p>
             </div>
 
@@ -187,11 +270,22 @@ export function CreateService() {
                 disabled={saving}
               />
             </div>
+
+            <Select
+              label="Status Service"
+              name="status"
+              value={status}
+              onChange={(event) =>
+                setStatus(event.target.value)
+              }
+              options={STATUS_OPTIONS}
+              disabled={saving}
+            />
           </div>
 
-          {submitError && (
+          {error && (
             <div className="form-error">
-              {submitError}
+              {error}
             </div>
           )}
 
@@ -209,7 +303,7 @@ export function CreateService() {
               type="submit"
               loading={saving}
             >
-              Simpan Service
+              Simpan Perubahan
             </Button>
           </div>
         </form>

@@ -6,7 +6,6 @@ import {
   Card,
   EmptyState,
   Input,
-  Loading,
   Table,
 } from "../../components/ui";
 
@@ -52,8 +51,13 @@ export function Customers() {
     setSearch(searchInput.trim());
   }
 
+  function handleResetSearch() {
+    setSearchInput("");
+    setSearch("");
+  }
+
   return (
-    <div className="page customers-page">
+    <div className="page">
       <div className="page-header">
         <div>
           <h1>Pelanggan</h1>
@@ -66,12 +70,16 @@ export function Customers() {
       </div>
 
       <Card>
-        <form className="customer-search" onSubmit={handleSearch}>
-          <Input
-            placeholder="Cari nama, nickname, atau nomor HP..."
-            value={searchInput}
-            onChange={(event) => setSearchInput(event.target.value)}
-          />
+        <form className="toolbar" onSubmit={handleSearch}>
+          <div className="toolbar-main">
+            <Input
+              placeholder="Cari nama, nickname, atau nomor HP..."
+              value={searchInput}
+              onChange={(event) =>
+                setSearchInput(event.target.value)
+              }
+            />
+          </div>
 
           <Button type="submit">
             Cari
@@ -81,10 +89,7 @@ export function Customers() {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => {
-                setSearchInput("");
-                setSearch("");
-              }}
+              onClick={handleResetSearch}
             >
               Reset
             </Button>
@@ -93,88 +98,98 @@ export function Customers() {
       </Card>
 
       {error && (
-        <Card>
-          <div className="page-error">
+        <Card className="page-error">
+          <div className="page-error-content">
             <strong>Gagal memuat pelanggan</strong>
-            <span>{error}</span>
-
-            <Button
-              variant="secondary"
-              onClick={() => void loadCustomers()}
-            >
-              Coba Lagi
-            </Button>
+            <p>{error}</p>
           </div>
+
+          <Button
+            variant="secondary"
+            onClick={() => void loadCustomers()}
+          >
+            Coba Lagi
+          </Button>
         </Card>
       )}
 
-      <Card className="customers-table-card">
-        {loading ? (
-          <Loading />
-        ) : customers.length === 0 ? (
-          <EmptyState
-            title="Belum ada pelanggan"
-            description={
-              search
-                ? `Tidak ada pelanggan yang cocok dengan "${search}".`
-                : "Tambahkan pelanggan pertama untuk mulai membuat order."
-            }
-            action={
-              !search ? (
-                <Button onClick={() => navigate("/customers/new")}>
-                  Tambah Pelanggan
-                </Button>
-              ) : undefined
-            }
-          />
-        ) : (
-          <Table
-            columns={[
-              {
-                key: "name",
-                label: "Pelanggan",
-                render: (customer) => (
-                  <div className="customer-name-cell">
-                    <strong>{customer.name}</strong>
+      <Card className="no-padding">
+        <div className="section-header table-section-header">
+          <div className="section-header-content">
+            <h3>Daftar Pelanggan</h3>
+            <p>{customers.length} pelanggan</p>
+          </div>
+        </div>
 
-                    {customer.nickname && (
-                      <span>@{customer.nickname}</span>
-                    )}
-                  </div>
-                ),
-              },
-              {
-                key: "phone",
-                label: "No. HP",
-                render: (customer) => customer.phone || "-",
-              },
-              {
-                key: "createdAt",
-                label: "Terdaftar",
-                render: (customer) =>
-                  customer.createdAt
-                    ? formatDate(customer.createdAt)
-                    : "-",
-              },
-              {
-                key: "actions",
-                label: "",
-                render: (customer) => (
+        <Table<Customer>
+          columns={[
+            {
+              key: "name",
+              label: "Pelanggan",
+              render: (customer) => (
+                <div className="table-primary">
+                  <strong>{customer.name}</strong>
+
+                  {customer.nickname && (
+                    <span>@{customer.nickname}</span>
+                  )}
+                </div>
+              ),
+            },
+            {
+              key: "phone",
+              label: "No. HP",
+              render: (customer) =>
+                customer.phone || "-",
+            },
+            {
+              key: "createdAt",
+              label: "Terdaftar",
+              render: (customer) =>
+                customer.createdAt
+                  ? formatDate(customer.createdAt)
+                  : "-",
+            },
+            {
+              key: "actions",
+              label: "",
+              render: (customer) => (
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    navigate(`/customers/${customer.id}`)
+                  }
+                >
+                  Detail
+                </Button>
+              ),
+            },
+          ]}
+          data={customers}
+          rowKey={(customer) => customer.id}
+          loading={loading}
+          empty={
+            <EmptyState
+              title="Belum ada pelanggan"
+              description={
+                search
+                  ? `Tidak ada pelanggan yang cocok dengan "${search}".`
+                  : "Tambahkan pelanggan pertama untuk mulai membuat order."
+              }
+              action={
+                !search ? (
                   <Button
-                    variant="secondary"
                     onClick={() =>
-                      navigate(`/customers/${customer.id}`)
+                      navigate("/customers/new")
                     }
                   >
-                    Detail
+                    Tambah Pelanggan
                   </Button>
-                ),
-              },
-            ]}
-            data={customers}
-            rowKey={(customer) => customer.id}
-          />
-        )}
+                ) : undefined
+              }
+            />
+          }
+        />
       </Card>
     </div>
   );

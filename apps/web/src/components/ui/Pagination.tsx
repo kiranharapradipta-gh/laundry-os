@@ -21,9 +21,12 @@ export function Pagination({
   return (
     <div className="ui-pagination">
       <div className="ui-pagination-info">
-        <span>Rows per page</span>
+        <label htmlFor="pagination-limit">
+          Rows per page
+        </label>
 
         <select
+          id="pagination-limit"
           value={limit}
           onChange={(event) =>
             onLimitChange(Number(event.target.value))
@@ -37,27 +40,36 @@ export function Pagination({
         <span>
           {total === 0
             ? "0 results"
-            : `Page ${page} of ${totalPages}`}
+            : `${page} of ${totalPages}`}
         </span>
       </div>
 
       <div className="ui-pagination-actions">
         <button
           type="button"
+          className="ui-pagination-button"
           disabled={!canPrevious}
           onClick={() => onPageChange(page - 1)}
+          aria-label="Previous page"
         >
-          ←
+          <span aria-hidden="true">‹</span>
         </button>
 
-        <span>{page}</span>
+        <span
+          className="ui-pagination-current"
+          aria-current="page"
+        >
+          {page}
+        </span>
 
         <button
           type="button"
+          className="ui-pagination-button"
           disabled={!canNext}
           onClick={() => onPageChange(page + 1)}
+          aria-label="Next page"
         >
-          →
+          <span aria-hidden="true">›</span>
         </button>
       </div>
     </div>

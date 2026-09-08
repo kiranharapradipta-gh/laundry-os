@@ -1,7 +1,9 @@
+import { Card, EmptyState } from "../../components/ui";
+
 export function Dashboard() {
   return (
     <section className="page">
-      <div className="page-heading">
+      <div className="page-header">
         <div>
           <h2>Good morning 👋</h2>
           <p>
@@ -10,14 +12,12 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div className="dashboard-placeholder">
-        <span>Dashboard</span>
-        <strong>Ready for Phase 4</strong>
-        <p>
-          Statistik dan data PostgreSQL akan masuk setelah API layer
-          selesai.
-        </p>
-      </div>
+      <Card>
+        <EmptyState
+          title="Dashboard"
+          description="Statistik dan data PostgreSQL akan masuk setelah API layer selesai."
+        />
+      </Card>
     </section>
   );
 }

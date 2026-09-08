@@ -13,13 +13,21 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="ui-empty">
-      <div className="ui-empty-icon">○</div>
+      <div className="ui-empty-icon" aria-hidden="true">
+        <span />
+      </div>
 
-      <strong>{title}</strong>
+      <div className="ui-empty-content">
+        <strong>{title}</strong>
 
-      {description && <p>{description}</p>}
+        {description && <p>{description}</p>}
+      </div>
 
-      {action && <div className="ui-empty-action">{action}</div>}
+      {action && (
+        <div className="ui-empty-action">
+          {action}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,61 @@
+.ui-card {
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
+}
+
+/* Card yang ingin menjadi container tanpa padding */
+.ui-card.no-padding {
+  padding: 0;
+}
+
+/* Card header/content helper */
+.ui-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.ui-card-header h2,
+.ui-card-header h3 {
+  margin: 0;
+  color: var(--text);
+}
+
+.ui-card-header h2 {
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.ui-card-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ui-card-header p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .ui-card {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .ui-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

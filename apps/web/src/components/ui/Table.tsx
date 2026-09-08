@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { Loading } from "./Loading";
+
 export interface TableColumn<T> {
   key: string;
   label: string;
@@ -24,8 +26,7 @@ export function Table<T>({
   if (loading) {
     return (
       <div className="ui-table-state">
-        <span className="ui-spinner" />
-        Loading data...
+        <Loading text="Memuat data..." />
       </div>
     );
   }
@@ -33,7 +34,11 @@ export function Table<T>({
   if (data.length === 0) {
     return (
       <div className="ui-table-state">
-        {empty ?? "No data found."}
+        {empty ?? (
+          <span className="ui-table-empty-text">
+            Tidak ada data.
+          </span>
+        )}
       </div>
     );
   }
@@ -44,7 +49,9 @@ export function Table<T>({
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column.key}>{column.label}</th>
+              <th key={column.key}>
+                {column.label}
+              </th>
             ))}
           </tr>
         </thead>
@@ -57,7 +64,9 @@ export function Table<T>({
                   {column.render
                     ? column.render(row)
                     : String(
-                        row[column.key as keyof T] ?? "",
+                        row[
+                          column.key as keyof T
+                        ] ?? "",
                       )}
                 </td>
               ))}

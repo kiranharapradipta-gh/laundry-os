@@ -81,7 +81,7 @@ export function Services() {
   const inactiveCount = services.length - activeCount;
 
   return (
-    <section className="page services-page">
+    <div className="page">
       <div className="page-header">
         <div>
           <h1>Services</h1>
@@ -99,60 +99,85 @@ export function Services() {
         </Button>
       </div>
 
-      <div className="stats-row">
-        <Card>
-          <div className="stat-card">
-            <span>Total Service</span>
-            <strong>{services.length}</strong>
-          </div>
-        </Card>
+      <div className="stats">
+        <div className="stat">
+          <Card>
+            <div className="stat-content">
+              <span className="stat-label">
+                Total Service
+              </span>
 
-        <Card>
-          <div className="stat-card">
-            <span>Aktif</span>
-            <strong>{activeCount}</strong>
-          </div>
-        </Card>
+              <strong className="stat-value">
+                {services.length}
+              </strong>
+            </div>
+          </Card>
+        </div>
 
-        <Card>
-          <div className="stat-card">
-            <span>Nonaktif</span>
-            <strong>{inactiveCount}</strong>
-          </div>
-        </Card>
+        <div className="stat">
+          <Card>
+            <div className="stat-content">
+              <span className="stat-label">
+                Aktif
+              </span>
+
+              <strong className="stat-value">
+                {activeCount}
+              </strong>
+            </div>
+          </Card>
+        </div>
+
+        <div className="stat">
+          <Card>
+            <div className="stat-content">
+              <span className="stat-label">
+                Nonaktif
+              </span>
+
+              <strong className="stat-value">
+                {inactiveCount}
+              </strong>
+            </div>
+          </Card>
+        </div>
       </div>
 
-      <Card>
-        <div className="section-toolbar">
-          <div>
-            <h2>Daftar Service</h2>
+      <Card className="no-padding">
+        <div className="section-header table-section-header">
+          <div className="section-header-content">
+            <h3>Daftar Service</h3>
+
             <p>
-              {filteredServices.length} service ditampilkan.
+              {filteredServices.length} service
+              ditampilkan.
             </p>
           </div>
 
-          <Select
-            value={filter}
-            onChange={(event) =>
-              setFilter(
-                event.target.value as ServiceFilter,
-              )
-            }
-            options={[
-              {
-                value: "ALL",
-                label: "Semua Service",
-              },
-              {
-                value: "ACTIVE",
-                label: "Aktif",
-              },
-              {
-                value: "INACTIVE",
-                label: "Nonaktif",
-              },
-            ]}
-          />
+          <div className="section-header-action">
+            <Select
+              value={filter}
+              onChange={(event) =>
+                setFilter(
+                  event.target.value as ServiceFilter,
+                )
+              }
+              options={[
+                {
+                  value: "ALL",
+                  label: "Semua Service",
+                },
+                {
+                  value: "ACTIVE",
+                  label: "Aktif",
+                },
+                {
+                  value: "INACTIVE",
+                  label: "Nonaktif",
+                },
+              ]}
+            />
+          </div>
         </div>
 
         {error ? (
@@ -253,6 +278,6 @@ export function Services() {
           />
         )}
       </Card>
-    </section>
+    </div>
   );
 }

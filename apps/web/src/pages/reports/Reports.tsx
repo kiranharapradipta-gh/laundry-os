@@ -1,17 +1,23 @@
+import { Card, EmptyState } from "../../components/ui";
+
 export function Reports() {
   return (
     <section className="page">
-      <div className="page-heading">
+      <div className="page-header">
         <div>
           <h2>Reports</h2>
-          <p>Monitor your laundry business performance.</p>
+          <p>
+            Monitor your laundry business performance.
+          </p>
         </div>
       </div>
 
-      <div className="dashboard-placeholder">
-        <span>Reports</span>
-        <strong>Ready for Phase 8</strong>
-      </div>
+      <Card>
+        <EmptyState
+          title="Reports"
+          description="Ready for Phase 8"
+        />
+      </Card>
     </section>
   );
 }

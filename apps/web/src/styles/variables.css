@@ -1,0 +1,66 @@
+:root {
+  /* ========================================
+     COLORS
+  ======================================== */
+
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+
+  --text: #172033;
+  --text-muted: #667085;
+  --text-soft: #98a2b3;
+
+  --border: #e6eaf0;
+  --border-strong: #d8dee8;
+
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-soft: #eff6ff;
+
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+
+  /* ========================================
+     LAYOUT
+  ======================================== */
+
+  --sidebar-width: 248px;
+
+  /* ========================================
+     RADIUS
+  ======================================== */
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* ========================================
+     LEGACY ALIASES
+     
+     Sementara dipertahankan supaya CSS lama
+     tidak langsung rusak saat kita refactor.
+  ======================================== */
+
+  --color-bg: var(--bg);
+  --color-background: var(--bg);
+
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-soft: var(--text-soft);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+}

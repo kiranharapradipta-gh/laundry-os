@@ -1,0 +1,60 @@
+/* ========================================
+   ORDERS
+======================================== */
+
+.order-number-cell,
+.order-customer-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.order-number-cell strong,
+.order-customer-cell strong {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.order-number-cell span,
+.order-customer-cell span {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+
+  padding: 0;
+  border: 0;
+
+  background: transparent;
+  color: inherit;
+
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.order-link strong {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.order-link span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.order-link:hover strong {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
