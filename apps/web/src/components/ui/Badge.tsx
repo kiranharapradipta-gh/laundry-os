@@ -1,14 +1,23 @@
+import type { ReactNode } from "react";
+
+type BadgeVariant =
+  | "default"
+  | "success"
+  | "warning"
+  | "danger"
+  | "info";
+
 interface BadgeProps {
-  children: React.ReactNode;
-  className?: string;
+  children: ReactNode;
+  variant?: BadgeVariant;
 }
 
-export default function Badge({
+export function Badge({
   children,
-  className = "",
+  variant = "default",
 }: BadgeProps) {
   return (
-    <span className={`badge ${className}`}>
+    <span className={`ui-badge ui-badge-${variant}`}>
       {children}
     </span>
   );

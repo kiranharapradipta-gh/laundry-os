@@ -1,15 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
-
-interface SidebarProps {
-  open?: boolean;
-  onClose?: () => void;
-}
 
 const navigation = [
   {
     label: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: "⌂",
   },
   {
@@ -28,24 +22,22 @@ const navigation = [
     icon: "◈",
   },
   {
-    label: "Storage",
-    path: "/storage",
-    icon: "▤",
+    label: "Reports",
+    path: "/reports",
+    icon: "▥",
+  },
+  {
+    label: "Settings",
+    path: "/settings",
+    icon: "⚙",
   },
 ];
 
-export default function Sidebar({
-  // open = false,
-  onClose,
-}: SidebarProps) {
-  const { user, logout } = useAuth();
-
+export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <div className="brand-mark">
-          L
-        </div>
+        <div className="brand-mark">L</div>
 
         <div>
           <strong>LaundryOS</strong>
@@ -54,49 +46,31 @@ export default function Sidebar({
       </div>
 
       <nav className="sidebar-nav">
-        <span className="nav-label">
-          MENU
-        </span>
+        <span className="nav-label">MENU</span>
 
         {navigation.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
-            end={item.path === "/"}
-            onClick={onClose}
             className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
+              `nav-item${isActive ? " active" : ""}`
             }
           >
-            <span className="nav-icon">
-              {item.icon}
-            </span>
-
+            <span className="nav-icon">{item.icon}</span>
             <span>{item.label}</span>
           </NavLink>
         ))}
       </nav>
 
-      <div className="sidebar-bottom">
+      <div className="sidebar-footer">
         <div className="sidebar-user">
-          <div className="user-avatar">
-            {user?.name?.charAt(0).toUpperCase()}
-          </div>
+          <div className="avatar">K</div>
 
-          <div className="user-info">
-            <strong>{user?.name}</strong>
-            <span>{user?.role}</span>
+          <div className="sidebar-user-info">
+            <strong>Admin</strong>
+            <span>Administrator</span>
           </div>
         </div>
-
-        <button
-          className="logout-button"
-          onClick={logout}
-          type="button"
-        >
-          <span>↪</span>
-          Keluar
-        </button>
       </div>
     </aside>
   );

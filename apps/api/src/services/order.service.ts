@@ -386,6 +386,7 @@ export async function createOrder(
 export interface GetOrdersOptions {
   search?: string;
   status?: string;
+  customerId?: string;
   page?: number;
   limit?: number;
 }
@@ -430,6 +431,8 @@ export async function getOrders(
               | "CANCELLED",
         }
       : {}),
+
+    ...(options.customerId ? { customerId: options.customerId } : {} ),
 
     ...(search
       ? {

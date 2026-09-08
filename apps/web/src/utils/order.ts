@@ -1,52 +1,99 @@
 import type { OrderStatus } from "../types/order";
 
-export const ORDER_STATUS_LABEL: Record<
-  OrderStatus,
-  string
-> = {
-  RECEIVED: "Diterima",
-  WASHING: "Dicuci",
-  DRYING: "Dikeringkan",
-  IRONING: "Disetrika",
-  READY: "Siap Diambil",
-  PICKED_UP: "Selesai",
-  CANCELLED: "Dibatalkan",
-};
-
-export const ORDER_STATUS_CLASS: Record<
-  OrderStatus,
-  string
-> = {
-  RECEIVED: "status-received",
-  WASHING: "status-washing",
-  DRYING: "status-drying",
-  IRONING: "status-ironing",
-  READY: "status-ready",
-  PICKED_UP: "status-picked",
-  CANCELLED: "status-cancelled",
-};
-
-export const ORDER_STATUS_FLOW: OrderStatus[] = [
-  "RECEIVED",
-  "WASHING",
-  "DRYING",
-  "IRONING",
-  "READY",
-  "PICKED_UP",
+export const ORDER_STATUSES: Array<{
+  value: OrderStatus;
+  label: string;
+}> = [
+  {
+    value: "RECEIVED",
+    label: "Diterima",
+  },
+  {
+    value: "WASHING",
+    label: "Dicuci",
+  },
+  {
+    value: "DRYING",
+    label: "Dikeringkan",
+  },
+  {
+    value: "IRONING",
+    label: "Disetrika",
+  },
+  {
+    value: "READY",
+    label: "Siap Diambil",
+  },
+  {
+    value: "PICKED_UP",
+    label: "Sudah Diambil",
+  },
+  {
+    value: "CANCELLED",
+    label: "Dibatalkan",
+  },
 ];
 
-export function getNextStatus(
+export function getOrderStatusLabel(
   status: OrderStatus,
-): OrderStatus | null {
-  const index =
-    ORDER_STATUS_FLOW.indexOf(status);
+): string {
+  return (
+    ORDER_STATUSES.find(
+      (item) => item.value === status,
+    )?.label ?? status
+  );
+}
 
-  if (
-    index === -1 ||
-    index === ORDER_STATUS_FLOW.length - 1
-  ) {
-    return null;
+export function getOrderStatusVariant(
+  status: OrderStatus,
+): "default" | "success" | "warning" | "danger" {
+  switch (status) {
+    case "RECEIVED":
+      return "default";
+
+    case "WASHING":
+    case "DRYING":
+    case "IRONING":
+      return "warning";
+
+    case "READY":
+      return "success";
+
+    case "PICKED_UP":
+      return "success";
+
+    case "CANCELLED":
+      return "danger";
+
+    default:
+      return "default";
   }
+}
 
-  return ORDER_STATUS_FLOW[index + 1];
+export function getNextOrderStatuses(
+  status: OrderStatus,
+): OrderStatus[] {
+  switch (status) {
+    case "RECEIVED":
+      return ["WASHING", "CANCELLED"];
+
+    case "WASHING":
+      return ["DRYING", "CANCELLED"];
+
+    case "DRYING":
+      return ["IRONING", "CANCELLED"];
+
+    case "IRONING":
+      return ["READY", "CANCELLED"];
+
+    case "READY":
+      return ["PICKED_UP", "CANCELLED"];
+
+    case "PICKED_UP":
+    case "CANCELLED":
+      return [];
+
+    default:
+      return [];
+  }
 }

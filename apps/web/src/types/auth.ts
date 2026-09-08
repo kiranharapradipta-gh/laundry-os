@@ -9,7 +9,12 @@ export interface AuthUser {
   businessName: string;
 }
 
-export interface LoginResponse {
+export interface LoginInput {
+  phone: string;
+  password: string;
+}
+
+export interface LoginResult {
   token: string;
   user: AuthUser;
 }

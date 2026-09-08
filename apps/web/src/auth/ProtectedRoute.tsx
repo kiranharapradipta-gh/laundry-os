@@ -1,25 +1,35 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import {
+  Navigate,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
+import { useAuth } from "../app/AuthContext";
+import { Loading } from "../components/ui/Loading";
 
-export default function ProtectedRoute() {
-  const { user, loading } = useAuth();
+export function ProtectedRoute() {
+  const {
+    isAuthenticated,
+    isLoading,
+  } = useAuth();
+
   const location = useLocation();
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="app-loading">
-        <div className="app-loading-spinner" />
-        <span>Memuat LaundryOS...</span>
+      <div className="auth-loading">
+        <Loading />
       </div>
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return (
       <Navigate
         to="/login"
         replace
-        state={{ from: location }}
+        state={{
+          from: location.pathname,
+        }}
       />
     );
   }

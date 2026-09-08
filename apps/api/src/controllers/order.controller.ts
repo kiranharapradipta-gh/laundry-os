@@ -223,17 +223,22 @@ export async function create(
 
 export async function list(
   req: AuthRequest,
-  res: Response
+  res: Response,
 ) {
   try {
     const search =
       typeof req.query.search === "string"
-        ? req.query.search
+        ? req.query.search.trim()
         : undefined;
 
     const status =
       typeof req.query.status === "string"
         ? req.query.status
+        : undefined;
+
+    const customerId =
+      typeof req.query.customerId === "string"
+        ? req.query.customerId
         : undefined;
 
     const pageValue =
@@ -247,14 +252,12 @@ export async function list(
         : 20;
 
     const page =
-      Number.isInteger(pageValue) &&
-      pageValue > 0
+      Number.isInteger(pageValue) && pageValue > 0
         ? pageValue
         : 1;
 
     const limit =
-      Number.isInteger(limitValue) &&
-      limitValue > 0
+      Number.isInteger(limitValue) && limitValue > 0
         ? Math.min(limitValue, 100)
         : 20;
 
@@ -263,17 +266,21 @@ export async function list(
       limit,
     };
 
-    if (search !== undefined) {
+    if (search !== undefined && search !== "") {
       options.search = search;
     }
 
-    if (status !== undefined) {
+    if (status !== undefined && status !== "") {
       options.status = status;
+    }
+
+    if (customerId !== undefined && customerId !== "") {
+      options.customerId = customerId;
     }
 
     const result = await getOrders(
       req.user!.businessId,
-      options
+      options,
     );
 
     return res.json({
@@ -282,15 +289,11 @@ export async function list(
       meta: result.meta,
     });
   } catch (error) {
-    console.error(
-      "List orders error:",
-      error
-    );
+    console.error("List orders error:", error);
 
     return res.status(500).json({
       success: false,
-      message:
-        "Gagal mengambil data order",
+      message: "Gagal mengambil data order",
     });
   }
 }

@@ -1,103 +1,159 @@
-import type { FormEvent } from "react";
+import {
+  useState,
+} from "react";
 
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import type { FormEvent } from "react"
 
-export default function Login() {
-  const { user, login } = useAuth();
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
+import { useAuth } from "../app/AuthContext";
+
+export function Login() {
+  const {
+    login,
+    isAuthenticated,
+  } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
-  if (user) {
-    return <Navigate to="/" replace />;
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const from =
+    (
+      location.state as
+        | { from?: string }
+        | null
+        | undefined
+    )?.from ?? "/dashboard";
+
+  if (isAuthenticated) {
+    return (
+      <Navigate
+        to="/dashboard"
+        replace
+      />
+    );
   }
 
-  async function handleSubmit(event: FormEvent) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
 
     setError("");
 
-    if (!phone.trim() || !password) {
-      setError("Nomor HP dan password wajib diisi.");
+    if (!phone.trim()) {
+      setError("Nomor HP wajib diisi.");
+      return;
+    }
+
+    if (!password) {
+      setError("Password wajib diisi.");
       return;
     }
 
     try {
-      setSubmitting(true);
+      setIsSubmitting(true);
 
-      await login(phone.trim(), password);
+      await login({
+        phone: phone.trim(),
+        password,
+      });
+
+      navigate(from, {
+        replace: true,
+      });
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Login gagal.",
+          : "Login gagal. Silakan coba lagi.",
       );
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   }
 
   return (
-    <main className="login-page">
-      <section className="login-card">
+    <div className="login-page">
+      <div className="login-card">
         <div className="login-brand">
-          <div className="login-logo">L</div>
+          <div className="login-brand-mark">
+            L
+          </div>
 
           <div>
             <h1>LaundryOS</h1>
-            <p>Kelola laundry lebih mudah.</p>
+            <p>
+              Laundry management system
+            </p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-field">
-            <label htmlFor="phone">Nomor HP</label>
+        <div className="login-heading">
+          <h2>Selamat datang 👋</h2>
 
-            <input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(event) =>
-                setPhone(event.target.value)
-              }
-              placeholder="08xxxxxxxxxx"
-              autoComplete="tel"
-            />
-          </div>
+          <p>
+            Masuk ke akun LaundryOS kamu untuk
+            melanjutkan.
+          </p>
+        </div>
 
-          <div className="form-field">
-            <label htmlFor="password">Password</label>
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
+          <Input
+            label="Nomor HP"
+            type="tel"
+            placeholder="Contoh: 08123456789"
+            value={phone}
+            onChange={(event) =>
+              setPhone(event.target.value)
+            }
+            autoComplete="tel"
+          />
 
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
-              placeholder="Masukkan password"
-              autoComplete="current-password"
-            />
-          </div>
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Masukkan password"
+            value={password}
+            onChange={(event) =>
+              setPassword(event.target.value)
+            }
+            autoComplete="current-password"
+          />
 
           {error && (
-            <div className="form-error">
+            <div className="login-error">
               {error}
             </div>
           )}
 
-          <button
+          <Button
             type="submit"
-            disabled={submitting}
+            variant="primary"
+            // size="lg"
+            // fullWidth
+            disabled={isSubmitting}
           >
-            {submitting ? "Masuk..." : "Masuk"}
-          </button>
+            {isSubmitting
+              ? "Memproses..."
+              : "Masuk"}
+          </Button>
         </form>
-      </section>
-    </main>
+
+        <div className="login-footer">
+          LaundryOS
+        </div>
+      </div>
+    </div>
   );
 }
