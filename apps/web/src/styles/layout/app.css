@@ -1,4 +1,89 @@
+/* =========================================
+   APP SHELL
+   ========================================= */
+
 .app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+
+/* =========================================
+   MAIN
+   ========================================= */
+
+.app-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+  width: 100%;
+  height: 100dvh;
+
+  margin-left: var(--sidebar-width);
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   CONTENT
+   Header fixed:
+   - Desktop: 72px
+   - Mobile: 64px
+
+   Content adalah SATU-SATUNYA area scroll.
+   ========================================= */
+
+.app-content {
+  flex: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  padding: 96px 24px 24px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+}
+
+
+/* =========================================
+   TABLET / MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .app-main {
+    width: 100%;
+    height: 100dvh;
+
+    margin-left: 0;
+  }
+
+  .app-content {
+    padding: 84px 16px 20px;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 480px) {
+  .app-content {
+    padding: 80px 12px 16px;
+  }
+}
+
+/* .app-shell {
   display: flex;
   min-height: 100vh;
   width: 100%;
@@ -11,6 +96,7 @@
   flex-direction: column;
   min-width: 0;
   min-height: 100vh;
+  margin-left: var(--sidebar-width);
 }
 
 .app-content {
@@ -20,6 +106,11 @@
 }
 
 @media (max-width: 768px) {
+  .app-main {
+    padding-top: 64px;
+    margin-left: 0;
+  }
+
   .app-content {
     padding: 20px 16px;
   }
@@ -29,4 +120,4 @@
   .app-content {
     padding: 16px 12px;
   }
-}
+} */

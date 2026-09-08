@@ -154,7 +154,7 @@ export function CustomerDetail() {
   }
 
   return (
-    <div className="page customer-detail-page">
+    <div className="page customer-detail-page" style={{ marginTop: 10 }}>
       <div className="page-header">
         <div>
           <button

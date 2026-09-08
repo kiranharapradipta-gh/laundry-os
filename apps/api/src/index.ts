@@ -12,6 +12,7 @@ import orderRoutes from "./routes/order.routes.js";
 import reportRoutes from "./routes/report.routes.js";
 import qrRoutes from "./routes/qr.routes.js";
 import itemPhotoRoutes from "./routes/item-photo.routes.js";
+import settingsRoutes from "./routes/settings.routes.js";
 import whatsappRoutes from "./routes/whatsapp.routes.js";
 
 const app = express();
@@ -118,6 +119,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/qr", qrRoutes);
 app.use("/api", itemPhotoRoutes);
+app.use("/api/settings", settingsRoutes);
 app.use("/api/whatsapp", whatsappRoutes);
 
 app.listen(PORT, () => {

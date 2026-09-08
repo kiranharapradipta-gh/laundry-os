@@ -57,7 +57,7 @@ export function Customers() {
   }
 
   return (
-    <div className="page">
+    <div className="page customers-page">
       <div className="page-header">
         <div>
           <h1>Pelanggan</h1>
@@ -69,7 +69,7 @@ export function Customers() {
         </Button>
       </div>
 
-      <Card>
+      <Card className="customer-search-card">
         <form className="toolbar" onSubmit={handleSearch}>
           <div className="toolbar-main">
             <Input
@@ -113,7 +113,7 @@ export function Customers() {
         </Card>
       )}
 
-      <Card className="no-padding">
+      <Card className="no-padding customer-table-card">
         <div className="section-header table-section-header">
           <div className="section-header-content">
             <h3>Daftar Pelanggan</h3>
@@ -128,7 +128,15 @@ export function Customers() {
               label: "Pelanggan",
               render: (customer) => (
                 <div className="table-primary">
-                  <strong>{customer.name}</strong>
+                  <button
+                    type="button"
+                    className="customer-name-link"
+                    onClick={() =>
+                      navigate(`/customers/${customer.id}`)
+                    }
+                  >
+                    {customer.name}
+                  </button>
 
                   {customer.nickname && (
                     <span>@{customer.nickname}</span>
@@ -149,20 +157,6 @@ export function Customers() {
                 customer.createdAt
                   ? formatDate(customer.createdAt)
                   : "-",
-            },
-            {
-              key: "actions",
-              label: "",
-              render: (customer) => (
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    navigate(`/customers/${customer.id}`)
-                  }
-                >
-                  Detail
-                </Button>
-              ),
             },
           ]}
           data={customers}

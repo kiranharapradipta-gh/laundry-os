@@ -82,76 +82,106 @@ export function Login() {
 
   return (
     <div className="login-page">
-      <div className="login-card">
+      <div className="login-container">
         <div className="login-brand">
           <div className="login-brand-mark">
             L
           </div>
 
-          <div>
-            <h1>LaundryOS</h1>
-            <p>
-              Laundry management system
-            </p>
+          <div className="login-brand-text">
+            <span className="login-brand-name">
+              LaundryOS
+            </span>
+            <span className="login-brand-tagline">
+              Laundry management made simple
+            </span>
           </div>
         </div>
 
-        <div className="login-heading">
-          <h2>Selamat datang 👋</h2>
+        <div className="login-content">
+          <div className="login-heading">
+            <span className="login-eyebrow">
+              WELCOME BACK
+            </span>
 
-          <p>
-            Masuk ke akun LaundryOS kamu untuk
-            melanjutkan.
-          </p>
+            <h1>
+              Selamat datang
+              <span>👋</span>
+            </h1>
+
+            <p>
+              Masuk untuk mengelola laundry
+              kamu dengan lebih mudah.
+            </p>
+          </div>
+
+          <form
+            className="login-form"
+            onSubmit={handleSubmit}
+          >
+            <div className="login-field">
+              <Input
+                label="Nomor HP"
+                type="tel"
+                placeholder="08123456789"
+                value={phone}
+                onChange={(event) =>
+                  setPhone(event.target.value)
+                }
+                autoComplete="tel"
+              />
+            </div>
+
+            <div className="login-field">
+              <Input
+                label="Password"
+                type="password"
+                placeholder="Masukkan password"
+                value={password}
+                onChange={(event) =>
+                  setPassword(event.target.value)
+                }
+                autoComplete="current-password"
+              />
+            </div>
+
+            {error && (
+              <div className="login-error">
+                <span className="login-error-icon">
+                  !
+                </span>
+
+                <span>{error}</span>
+              </div>
+            )}
+
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <span className="login-loading">
+                  <span className="login-spinner" />
+                  Memproses...
+                </span>
+              ) : (
+                <>
+                  Masuk
+                  <span className="login-button-arrow">
+                    →
+                  </span>
+                </>
+              )}
+            </Button>
+          </form>
         </div>
 
-        <form
-          className="login-form"
-          onSubmit={handleSubmit}
-        >
-          <Input
-            label="Nomor HP"
-            type="tel"
-            placeholder="Contoh: 08123456789"
-            value={phone}
-            onChange={(event) =>
-              setPhone(event.target.value)
-            }
-            autoComplete="tel"
-          />
-
-          <Input
-            label="Password"
-            type="password"
-            placeholder="Masukkan password"
-            value={password}
-            onChange={(event) =>
-              setPassword(event.target.value)
-            }
-            autoComplete="current-password"
-          />
-
-          {error && (
-            <div className="login-error">
-              {error}
-            </div>
-          )}
-
-          <Button
-            type="submit"
-            variant="primary"
-            // size="lg"
-            // fullWidth
-            disabled={isSubmitting}
-          >
-            {isSubmitting
-              ? "Memproses..."
-              : "Masuk"}
-          </Button>
-        </form>
-
         <div className="login-footer">
+          <span className="login-footer-dot" />
           LaundryOS
+          <span>•</span>
+          <span>2026</span>
         </div>
       </div>
     </div>

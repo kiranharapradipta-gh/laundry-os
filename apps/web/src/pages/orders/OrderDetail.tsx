@@ -119,7 +119,7 @@ export function OrderDetail() {
   }));
 
   return (
-    <div className="page order-detail-page">
+    <div className="page order-detail-page" style={{ marginTop: 10 }}>
       <div className="order-detail-topbar">
         <div>
           <Link to="/orders" className="back-link">
@@ -264,30 +264,32 @@ export function OrderDetail() {
               </div>
             </div>
 
-            {nextStatuses.length > 0 ? (
-              <>
-                <Select
-                  label="Status berikutnya"
-                  value={selectedStatus}
-                  options={[
-                    {
-                      value: "",
-                      label: "Pilih status",
-                    },
-                    ...statusOptions,
-                  ]}
-                  onChange={(event) =>
-                    setSelectedStatus(
-                      event.target.value as OrderStatus | "",
-                    )
-                  }
-                />
+            {updateError && (
+              <div className="order-update-error">
+                {updateError}
+              </div>
+            )}
 
-                {updateError && (
-                  <div className="order-update-error">
-                    {updateError}
-                  </div>
-                )}
+            {nextStatuses.length > 0 ? (
+              <div className="status-update-row">
+                <div className="status-select-wrapper">
+                  <Select
+                    label="Status berikutnya"
+                    value={selectedStatus}
+                    options={[
+                      {
+                        value: "",
+                        label: "Pilih status",
+                      },
+                      ...statusOptions,
+                    ]}
+                    onChange={(event) =>
+                      setSelectedStatus(
+                        event.target.value as OrderStatus | "",
+                      )
+                    }
+                  />
+                </div>
 
                 <Button
                   variant="primary"
@@ -295,11 +297,9 @@ export function OrderDetail() {
                   disabled={!selectedStatus || updating}
                   onClick={() => void handleStatusUpdate()}
                 >
-                  {updating
-                    ? "Menyimpan..."
-                    : "Update Status"}
+                  {updating ? "Menyimpan..." : "Update Status"}
                 </Button>
-              </>
+              </div>
             ) : (
               <div className="status-finished">
                 <Badge

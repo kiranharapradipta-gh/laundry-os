@@ -31,6 +31,7 @@ interface AuthContextValue {
   isLoading: boolean;
   login: (input: LoginInput) => Promise<void>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext =
@@ -66,6 +67,19 @@ export function AuthProvider({
     },
     [],
   );
+
+  const refreshUser = useCallback(async () => {
+    const storedToken = getStoredToken();
+
+    if (!storedToken) {
+      return;
+    }
+
+    const currentUser = await getMe();
+
+    setToken(storedToken);
+    setUser(currentUser);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -116,8 +130,9 @@ export function AuthProvider({
       isLoading,
       login,
       logout,
+      refreshUser
     }),
-    [user, token, isLoading, login, logout],
+    [user, token, isLoading, login, logout, refreshUser],
   );
 
   return (

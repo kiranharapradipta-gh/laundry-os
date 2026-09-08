@@ -81,7 +81,7 @@ export function Services() {
   const inactiveCount = services.length - activeCount;
 
   return (
-    <div className="page">
+    <div className="page services-page">
       <div className="page-header">
         <div>
           <h1>Services</h1>
@@ -219,12 +219,18 @@ export function Services() {
                 label: "Service",
                 render: (service) => (
                   <div className="table-primary">
-                    <strong>{service.name}</strong>
+                    <button
+                      type="button"
+                      className="service-name-link"
+                      onClick={() =>
+                        navigate(`/services/${service.id}/edit`)
+                      }
+                    >
+                      {service.name}
+                    </button>
 
                     {service.description && (
-                      <span>
-                        {service.description}
-                      </span>
+                      <span>{service.description}</span>
                     )}
                   </div>
                 ),
@@ -256,22 +262,6 @@ export function Services() {
                       ? "Aktif"
                       : "Nonaktif"}
                   </Badge>
-                ),
-              },
-              {
-                key: "actions",
-                label: "Aksi",
-                render: (service) => (
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      navigate(
-                        `/services/${service.id}/edit`,
-                      )
-                    }
-                  >
-                    Edit
-                  </Button>
                 ),
               },
             ]}
