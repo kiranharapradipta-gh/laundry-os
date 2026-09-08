@@ -1,6 +1,6 @@
 import { apiClient } from "./client";
 import type { ApiResponse } from "../../types/api";
-import type { Customer } from "../../types/customer";
+import type { Customer, UpdateCustomerInput } from "../../types/customer";
 
 export async function getCustomers(search?: string): Promise<Customer[]> {
   const params = new URLSearchParams();
@@ -53,12 +53,6 @@ export async function getCustomer(id: string): Promise<Customer> {
   }
 
   return response.data;
-}
-
-export interface UpdateCustomerInput {
-  phone?: string;
-  name?: string;
-  nickname?: string;
 }
 
 export async function updateCustomer(

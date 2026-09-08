@@ -167,7 +167,9 @@ export function CustomerDetail() {
 
           <h1>{customer.name}</h1>
 
-          <p>Detail informasi pelanggan dan riwayat transaksinya.</p>
+          <p>
+            Detail informasi pelanggan dan riwayat transaksinya.
+          </p>
         </div>
 
         <Button
@@ -177,13 +179,6 @@ export function CustomerDetail() {
           }
         >
           Edit Pelanggan
-        </Button>
-        
-        <Button
-          variant="secondary"
-          onClick={() => navigate(`/orders/new?customerId=${customer.id}`)}
-        >
-          + Buat Order
         </Button>
       </div>
 
@@ -244,6 +239,14 @@ export function CustomerDetail() {
                   : "Belum ada order untuk pelanggan ini."}
               </p>
             </div>
+
+            <Button
+              onClick={() =>
+                navigate(`/orders/new?customerId=${customer.id}`)
+              }
+            >
+              + Buat Order
+            </Button>
           </div>
 
           {orderError ? (

@@ -23,6 +23,7 @@ import { CreateOrder } from "../pages/orders/CreateOrder";
 import { CreateCustomer } from "../pages/customers/CreateCustomer";
 import { CustomerDetail } from "../pages/customers/CustomerDetail";
 import { CustomerEdit } from "../pages/customers/CustomerEdit";
+import { CreateService } from "../pages/services/CreateService";
 
 export function App() {
   return (
@@ -73,6 +74,11 @@ export function App() {
             <Route
               path="/customers"
               element={<Customers />}
+            />
+
+            <Route
+              path="/services/new"
+              element={<CreateService />}
             />
 
             <Route

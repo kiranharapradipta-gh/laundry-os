@@ -53,11 +53,10 @@ export function CreateOrder() {
       setLoadingData(true);
       setError("");
 
-      const [customerData, serviceData] =
-        await Promise.all([
-          getCustomers(),
-          getServices(),
-        ]);
+      const [customerData, serviceData] = await Promise.all([
+        getCustomers(),
+        getServices(),
+      ]);
 
       setCustomers(customerData);
       setServices(serviceData);
@@ -80,11 +79,11 @@ export function CreateOrder() {
     } finally {
       setLoadingData(false);
     }
-  }, [])
+  }, [customerIdFromUrl]);
 
   useEffect(() => {
     void loadCustomer();
-  }, []);
+  }, [loadCustomer]);
 
   const customerOptions = useMemo(
     () => [
