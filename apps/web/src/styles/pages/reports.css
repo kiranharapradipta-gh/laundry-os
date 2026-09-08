@@ -1,0 +1,506 @@
+/* ========================================
+   REPORTS PAGE
+======================================== */
+
+.reports-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.reports-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.reports-title h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.reports-title p {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ========================================
+   REPORT FILTER
+======================================== */
+
+.form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  width: 100%;
+}
+
+.form-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.form-row label span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.form-row input[type="date"] {
+  width: 180px;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.form-row input[type="date"]:hover {
+  border-color: var(--text-muted);
+}
+
+.form-row input[type="date"]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 10%);
+}
+
+.form-row .ui-button {
+  height: 42px;
+  padding: 0 20px;
+  flex: 0 0 auto;
+}
+
+/* ========================================
+   SUMMARY CARDS
+======================================== */
+
+.report-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.report-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.report-card-label {
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.report-card-value {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-card-meta {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ========================================
+   REPORT GRID
+======================================== */
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.report-panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.report-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.report-panel-title {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.report-panel-subtitle {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ========================================
+   REVENUE CHART
+======================================== */
+
+.revenue-chart {
+  width: 100%;
+  min-height: 280px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.revenue-chart-inner {
+  min-width: 600px;
+  height: 280px;
+}
+
+/* ========================================
+   REPORT STATS
+======================================== */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.stat {
+  min-width: 0;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat span {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.stat strong {
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========================================
+   STATUS
+======================================== */
+
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status-info {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.status-name {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-count {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* ========================================
+   TOP SERVICES
+======================================== */
+
+.top-services {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.service-row:first-child {
+  padding-top: 0;
+}
+
+.service-row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.service-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.service-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.service-name {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.service-quantity {
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.service-revenue {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+/* ========================================
+   EMPTY / LOADING
+======================================== */
+
+.report-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1100px) {
+  .report-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .reports-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .reports-title h2 {
+    font-size: 21px;
+  }
+
+  .reports-filter {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .reports-filter input {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .reports-filter button {
+    flex: 0 0 auto;
+  }
+
+  .report-summary-grid {
+    gap: 12px;
+  }
+
+  .report-card {
+    padding: 16px;
+  }
+
+  .report-card-value {
+    font-size: 20px;
+  }
+
+  .report-panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-filter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .reports-filter input {
+    width: 100%;
+  }
+
+  .reports-filter button {
+    width: 100%;
+  }
+
+  .report-card-value {
+    font-size: 22px;
+  }
+
+  .report-panel {
+    padding: 14px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 1024px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .stat {
+    padding: 16px;
+  }
+
+  .stat strong {
+    font-size: 20px;
+  }
+
+  .ui-table th,
+  .ui-table td {
+    padding: 12px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 640px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .form-row label {
+    width: 100%;
+  }
+
+  .form-row input[type="date"] {
+    width: 100%;
+  }
+
+  .form-row .ui-button {
+    width: 100%;
+  }
+
+  .ui-table th,
+  .ui-table td {
+    padding: 12px;
+  }
+}

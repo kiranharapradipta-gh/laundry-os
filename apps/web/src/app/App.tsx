@@ -7,7 +7,7 @@ import {
 AuthProvider
 import { ProtectedRoute } from "../auth/ProtectedRoute";
 
-import { AppLayout } from "../layouts/AppLayout";
+import AppLayout from "../layouts/AppLayout";
 
 import { Login } from "../pages/Login";
 

@@ -17,5 +17,6 @@
 
 @import "./pages/page.css";
 @import "./pages/orders.css";
+@import "./pages/reports.css";
 
 @import "./pages/auth.css";

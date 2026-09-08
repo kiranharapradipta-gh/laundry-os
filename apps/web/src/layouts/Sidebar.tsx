@@ -1,5 +1,10 @@
 import { NavLink } from "react-router-dom";
 
+interface SidebarProps {
+  open: boolean;
+  onNavigate: () => void;
+}
+
 const navigation = [
   {
     label: "Dashboard",
@@ -33,9 +38,14 @@ const navigation = [
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({
+  open,
+  onNavigate,
+}: SidebarProps) {
   return (
-    <aside className="sidebar">
+    <aside
+      className={`sidebar${open ? " sidebar-open" : ""}`}
+    >
       <div className="sidebar-brand">
         <div className="brand-mark">L</div>
 
@@ -52,11 +62,15 @@ export function Sidebar() {
           <NavLink
             key={item.path}
             to={item.path}
+            onClick={onNavigate}
             className={({ isActive }) =>
               `nav-item${isActive ? " active" : ""}`
             }
           >
-            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-icon">
+              {item.icon}
+            </span>
+
             <span>{item.label}</span>
           </NavLink>
         ))}
@@ -75,3 +89,5 @@ export function Sidebar() {
     </aside>
   );
 }
+
+export default Sidebar;
