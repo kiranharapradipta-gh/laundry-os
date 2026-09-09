@@ -163,34 +163,50 @@ export function CustomerEdit() {
         </div>
       </div>
 
-      <Card>
+      <Card className="customer-form-card">
         <form
           className="customer-form"
           onSubmit={handleSubmit}
         >
-          <Input
-            label="Nama"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            placeholder="Contoh: Budi Santoso"
-            disabled={saving}
-          />
+          <div className="customer-form-header">
+            <div className="customer-form-icon">
+              {customer.name.charAt(0).toUpperCase()}
+            </div>
 
-          <Input
-            label="Nomor HP"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-            placeholder="Contoh: 081234567890"
-            disabled={saving}
-          />
+            <div>
+              <h2>Informasi Pelanggan</h2>
+              <p>
+                Perbarui informasi dasar pelanggan di bawah ini.
+              </p>
+            </div>
+          </div>
 
-          <Input
-            label="Nickname"
-            value={nickname}
-            onChange={(event) => setNickname(event.target.value)}
-            placeholder="Contoh: Budi"
-            disabled={saving}
-          />
+          <div className="customer-form-fields">
+            <Input
+              label="Nama"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Contoh: Budi Santoso"
+              disabled={saving}
+            />
+
+            <Input
+              label="Nomor HP"
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              placeholder="Contoh: 081234567890"
+              disabled={saving}
+            />
+
+            <Input
+              label="Nickname"
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
+              placeholder="Contoh: Budi"
+              disabled={saving}
+            />
+          </div>
 
           {formError && (
             <div className="form-error">

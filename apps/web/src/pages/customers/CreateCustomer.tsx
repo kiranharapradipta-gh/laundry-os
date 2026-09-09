@@ -63,6 +63,14 @@ export function CreateCustomer() {
     <div className="page create-customer-page">
       <div className="page-header">
         <div>
+          <button
+            type="button"
+            className="back-link"
+            onClick={() => navigate("/customers")}
+          >
+            ← Kembali ke Pelanggan
+          </button>
+
           <h1>Tambah Pelanggan</h1>
           <p>Tambahkan pelanggan baru ke database.</p>
         </div>
@@ -70,9 +78,20 @@ export function CreateCustomer() {
 
       <Card className="customer-form-card">
         <form onSubmit={handleSubmit}>
-          <div className="form-section">
-            <h2>Informasi Pelanggan</h2>
+          <div className="customer-form-header">
+            <div className="customer-form-icon">
+              +
+            </div>
 
+            <div>
+              <h2>Informasi Pelanggan</h2>
+              <p>
+                Isi informasi dasar pelanggan yang akan disimpan ke database.
+              </p>
+            </div>
+          </div>
+
+          <div className="customer-form-fields">
             <Input
               label="Nama"
               placeholder="Contoh: Budi Santoso"

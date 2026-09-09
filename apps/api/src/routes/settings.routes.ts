@@ -6,6 +6,7 @@ import {
   changePasswordController,
   getSettingsController,
   updateBusinessController,
+  updateOperationalSettingsController,
   updateProfileController,
 } from "../controllers/settings.controller.js";
 
@@ -18,6 +19,8 @@ router.get("/", getSettingsController);
 router.patch("/profile", updateProfileController);
 
 router.patch("/business", updateBusinessController);
+
+router.patch("/operational", updateOperationalSettingsController);
 
 router.patch("/password", changePasswordController);
 

@@ -463,7 +463,7 @@ export function Dashboard() {
 
         <section className="quick-actions">
           <a
-            href="/orders"
+            href="/orders/new"
             className="quick-action quick-action-primary"
           >
             <span className="quick-action-icon">+</span>
@@ -476,7 +476,7 @@ export function Dashboard() {
             <b>→</b>
           </a>
 
-          <a href="/customers" className="quick-action">
+          <a href="/customers/new" className="quick-action">
             <span className="quick-action-icon">♙</span>
 
             <span>

@@ -1,0 +1,362 @@
+.service-detail-page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.service-detail-page .page-header {
+  margin-bottom: 24px;
+}
+
+.service-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.service-detail-page .back-link:hover {
+  text-decoration: underline;
+}
+
+.service-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.service-detail-title h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.service-detail-title p {
+  margin: 7px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.service-detail-page .page-header > div:last-child {
+  flex-shrink: 0;
+}
+
+/* =========================
+   STATS
+   ========================= */
+
+.service-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.service-detail-stats .card {
+  min-width: 0;
+}
+
+.service-stat-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.service-detail-stats strong {
+  display: block;
+  color: var(--text);
+  font-size: 21px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.service-detail-stats small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* =========================
+   ORDERS
+   ========================= */
+
+.service-orders-card {
+  overflow: hidden;
+}
+
+.service-orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.service-orders-header h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.service-orders-header p {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.service-order-count {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================
+   ORDER LIST
+   ========================= */
+
+.service-orders-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-order-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 160px 150px 24px;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  padding: 17px 22px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.service-order-row:last-child {
+  border-bottom: 0;
+}
+
+.service-order-row:hover {
+  background: var(--surface-soft);
+}
+
+.service-order-main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.service-order-main strong {
+  overflow: hidden;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.service-order-main span {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.service-order-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.service-order-meta span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.service-order-meta strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.service-order-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.service-order-status small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.service-order-arrow {
+  color: var(--text-muted);
+  font-size: 18px;
+  transition: transform 0.15s ease;
+}
+
+.service-order-row:hover .service-order-arrow {
+  color: var(--primary);
+  transform: translateX(3px);
+}
+
+/* =========================
+   EMPTY / LOADING / ERROR
+   ========================= */
+
+.service-empty-orders {
+  padding: 32px 20px;
+}
+
+.service-detail-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.service-detail-error {
+  border-color: #fecaca;
+  background: #fffafa;
+  color: #b91c1c;
+}
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 1100px) {
+  .service-detail-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-order-row {
+    grid-template-columns: minmax(160px, 1fr) 130px 130px 20px;
+    gap: 14px;
+  }
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 768px) {
+  .service-detail-page .page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .service-detail-page .page-header > div:last-child {
+    width: 100%;
+  }
+
+  .service-detail-page .page-header > div:last-child button {
+    width: 100%;
+  }
+
+  .service-detail-title {
+    align-items: flex-start;
+  }
+
+  .service-detail-title h1 {
+    font-size: 23px;
+  }
+
+  .service-detail-stats {
+    gap: 12px;
+  }
+
+  .service-orders-header {
+    align-items: flex-start;
+    padding: 18px 16px;
+  }
+
+  .service-order-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .service-order-meta {
+    align-items: flex-end;
+  }
+
+  .service-order-status {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 4px;
+  }
+
+  .service-order-arrow {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-detail-title {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .service-detail-title h1 {
+    font-size: 21px;
+  }
+
+  .service-detail-title p {
+    font-size: 13px;
+  }
+
+  .service-detail-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .service-detail-stats strong {
+    font-size: 18px;
+  }
+
+  .service-orders-header {
+    padding: 16px;
+  }
+
+  .service-orders-header h3 {
+    font-size: 15px;
+  }
+
+  .service-order-row {
+    padding: 14px;
+  }
+}

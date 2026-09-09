@@ -1,6 +1,6 @@
 import { apiClient } from "./client";
 import type { ApiResponse } from "../../types/api";
-import type { Service } from "../../types/service";
+import type { Service, ServiceDetail } from "../../types/service";
 
 export interface CreateServiceInput {
   name: string;
@@ -37,8 +37,8 @@ export async function getServices(
 
 export async function getService(
   id: string,
-): Promise<Service> {
-  const response = await apiClient<ApiResponse<Service>>(
+): Promise<ServiceDetail> {
+  const response = await apiClient<ApiResponse<ServiceDetail>>(
     `/services/${id}`,
   );
 

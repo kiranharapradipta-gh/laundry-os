@@ -25,6 +25,7 @@ import { CustomerDetail } from "../pages/customers/CustomerDetail";
 import { CustomerEdit } from "../pages/customers/CustomerEdit";
 import { CreateService } from "../pages/services/CreateService";
 import { ServiceEdit } from "../pages/services/ServiceEdit";
+import ServiceDetail from "../pages/services/ServiceDetail";
 
 export function App() {
   return (
@@ -85,6 +86,11 @@ export function App() {
             <Route
               path="/services/:id/edit"
               element={<ServiceEdit />}
+            />
+
+            <Route
+              path="/services/:id"
+              element={<ServiceDetail />}
             />
 
             <Route

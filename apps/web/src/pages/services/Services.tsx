@@ -82,65 +82,82 @@ export function Services() {
 
   return (
     <div className="page services-page">
-      <div className="page-header">
-        <div>
-          <h1>Services</h1>
+      <div className="services-hero">
+        <div className="services-hero-content">
+          <div className="services-hero-icon">
+            ✦
+          </div>
 
-          <p>
-            Kelola layanan laundry dan harga yang
-            digunakan saat membuat order.
-          </p>
+          <div className="services-hero-text">
+            <span className="services-eyebrow">
+              Manajemen Laundry
+            </span>
+
+            <h1>Services</h1>
+
+            <p>
+              Kelola layanan, harga, dan status service
+              yang tersedia untuk pelanggan.
+            </p>
+          </div>
         </div>
 
         <Button
           onClick={() => navigate("/services/new")}
+          className="services-add-button"
         >
           + Tambah Service
         </Button>
       </div>
 
-      <div className="stats">
-        <div className="stat">
-          <Card>
-            <div className="stat-content">
-              <span className="stat-label">
-                Total Service
-              </span>
+      <div className="services-stats">
+        <Card className="services-stat-card">
+          <div className="services-stat-icon">
+            ◎
+          </div>
 
-              <strong className="stat-value">
-                {services.length}
-              </strong>
-            </div>
-          </Card>
-        </div>
+          <div className="services-stat-content">
+            <span>Total Service</span>
 
-        <div className="stat">
-          <Card>
-            <div className="stat-content">
-              <span className="stat-label">
-                Aktif
-              </span>
+            <strong>{services.length}</strong>
 
-              <strong className="stat-value">
-                {activeCount}
-              </strong>
-            </div>
-          </Card>
-        </div>
+            <small>
+              Semua layanan
+            </small>
+          </div>
+        </Card>
 
-        <div className="stat">
-          <Card>
-            <div className="stat-content">
-              <span className="stat-label">
-                Nonaktif
-              </span>
+        <Card className="services-stat-card">
+          <div className="services-stat-icon active">
+            ✓
+          </div>
 
-              <strong className="stat-value">
-                {inactiveCount}
-              </strong>
-            </div>
-          </Card>
-        </div>
+          <div className="services-stat-content">
+            <span>Service Aktif</span>
+
+            <strong>{activeCount}</strong>
+
+            <small>
+              Tersedia untuk order
+            </small>
+          </div>
+        </Card>
+
+        <Card className="services-stat-card">
+          <div className="services-stat-icon inactive">
+            —
+          </div>
+
+          <div className="services-stat-content">
+            <span>Service Nonaktif</span>
+
+            <strong>{inactiveCount}</strong>
+
+            <small>
+              Tidak tersedia
+            </small>
+          </div>
+        </Card>
       </div>
 
       <Card className="no-padding">
@@ -223,7 +240,7 @@ export function Services() {
                       type="button"
                       className="service-name-link"
                       onClick={() =>
-                        navigate(`/services/${service.id}/edit`)
+                        navigate(`/services/${service.id}`)
                       }
                     >
                       {service.name}

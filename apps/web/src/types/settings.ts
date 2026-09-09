@@ -13,6 +13,7 @@ export interface SettingsBusiness {
   phone: string | null;
   address: string | null;
   logoUrl: string | null;
+  settings: OperationalSettings | null;
 }
 
 export interface SettingsData {
@@ -40,4 +41,24 @@ export interface UpdateBusinessInput {
 export interface ChangePasswordInput {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface OperationalSettings {
+  id: string;
+  openingTime: string;
+  closingTime: string;
+  operatingDays: number[];
+  processingDays: number;
+  defaultOrderStatus: "RECEIVED";
+  allowOrderCancellation: boolean;
+  confirmBeforeDelete: boolean;
+}
+
+export interface UpdateOperationalSettingsInput {
+  openingTime?: string;
+  closingTime?: string;
+  operatingDays?: number[];
+  processingDays?: number;
+  allowOrderCancellation?: boolean;
+  confirmBeforeDelete?: boolean;
 }

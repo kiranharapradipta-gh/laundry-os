@@ -6,6 +6,7 @@ import type {
   ChangePasswordInput,
   SettingsData,
   UpdateBusinessInput,
+  UpdateOperationalSettingsInput,
   UpdateProfileInput,
 } from "../../types/settings";
 
@@ -70,4 +71,14 @@ export async function changePassword(
   if (!response.success) {
     throw new Error(response.message);
   }
+}
+
+export async function updateOperationalSettings(
+  input: UpdateOperationalSettingsInput
+) {
+  const response = await apiClient<ApiResponse<null>>("/settings/operational", {
+    method: 'PATCH',
+    body: JSON.stringify(input)
+  });
+  return response
 }

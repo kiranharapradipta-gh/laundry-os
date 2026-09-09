@@ -1,0 +1,286 @@
+.service-form-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.service-form-page .page-header {
+  margin-bottom: 24px;
+}
+
+.service-form-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.service-form-page .back-link:hover {
+  text-decoration: underline;
+}
+
+.service-form-page .page-header h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.service-form-page .page-header p {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Card */
+
+.service-form-card {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* Form */
+
+.service-form {
+  width: 100%;
+}
+
+/* Header */
+
+.service-form-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.service-form-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--primary);
+
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.service-form-header h2 {
+  margin: 2px 0 5px;
+
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.service-form-header p {
+  margin: 0;
+
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Fields */
+
+.service-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  padding: 24px 0;
+}
+
+.service-form-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(180px, 0.8fr);
+  gap: 16px;
+}
+
+/* Status */
+
+.service-status-section {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.service-status-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.service-status-heading h3 {
+  margin: 0;
+
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.service-status-heading p {
+  max-width: 520px;
+  margin: 5px 0 0;
+
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.service-status-indicator {
+  flex: 0 0 auto;
+
+  padding: 5px 9px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.service-status-indicator.is-active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.service-status-indicator.is-inactive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Error */
+
+.service-form-page .form-error {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+
+  background: #fff7f7;
+  color: #b91c1c;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Actions */
+
+.service-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* Tablet */
+
+@media (max-width: 768px) {
+  .service-form-page .page-header h1 {
+    font-size: 24px;
+  }
+
+  .service-form-card {
+    max-width: none;
+  }
+
+  .service-form-fields {
+    gap: 16px;
+    padding: 20px 0;
+  }
+
+  .service-form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .service-status-section {
+    padding: 16px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .service-form-page .page-header {
+    margin-bottom: 18px;
+  }
+
+  .service-form-page .page-header h1 {
+    font-size: 21px;
+  }
+
+  .service-form-page .page-header p {
+    font-size: 13px;
+  }
+
+  .service-form-header {
+    gap: 11px;
+    padding-bottom: 18px;
+  }
+
+  .service-form-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+
+    border-radius: 10px;
+    font-size: 15px;
+  }
+
+  .service-form-header h2 {
+    font-size: 16px;
+  }
+
+  .service-form-header p {
+    font-size: 12px;
+  }
+
+  .service-form-fields {
+    gap: 14px;
+    padding: 18px 0;
+  }
+
+  .service-status-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .service-status-heading p {
+    font-size: 11px;
+  }
+
+  .service-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .service-form-actions button {
+    width: 100%;
+  }
+}

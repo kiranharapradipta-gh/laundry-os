@@ -145,24 +145,43 @@ export function Reports() {
   }
 
   return (
-    <section className="page">
-      <div className="page-header">
-        <div>
-          <h2>Reports</h2>
+    <section className="page reports-page">
+      <div className="reports-header">
+        <div className="reports-title">
+          <span className="reports-eyebrow">
+            Business Analytics
+          </span>
+
+          <h1>Reports</h1>
+
           <p>
-            Monitor your laundry business performance.
+            Pantau performa bisnis laundry berdasarkan
+            periode yang kamu pilih.
           </p>
         </div>
       </div>
 
-      <Card>
+      <Card className="reports-filter-card">
         <form
-          className="form"
+          className="reports-filter"
           onSubmit={handleSubmit}
         >
-          <div className="form-row">
+          <div className="reports-filter-heading">
+            <div className="reports-filter-icon">
+              ◷
+            </div>
+
+            <div>
+              <strong>Periode Laporan</strong>
+              <span>
+                Pilih rentang tanggal untuk melihat performa.
+              </span>
+            </div>
+          </div>
+
+          <div className="reports-filter-fields">
             <label>
-              <span>From</span>
+              <span>Dari</span>
 
               <input
                 type="date"
@@ -173,8 +192,12 @@ export function Reports() {
               />
             </label>
 
+            <span className="reports-date-separator">
+              →
+            </span>
+
             <label>
-              <span>To</span>
+              <span>Sampai</span>
 
               <input
                 type="date"
@@ -188,20 +211,18 @@ export function Reports() {
             <button
               type="submit"
               disabled={loading}
-              className="ui-button"
+              className="ui-button reports-apply-button"
             >
-              {loading
-                ? "Loading..."
-                : "Apply"}
+              {loading ? "Memuat..." : "Terapkan"}
             </button>
           </div>
         </form>
       </Card>
 
       {loading && !report && (
-        <Card>
+        <Card className="reports-loading">
           <EmptyState
-            title="Loading report"
+            title="Memuat laporan"
             description="Mengambil data laporan dari database..."
           />
         </Card>
@@ -215,114 +236,316 @@ export function Reports() {
 
       {report && !loading && (
         <>
-          <div className="stats">
-            <div className="stat">
-              <span>Total Orders</span>
-              <strong>
-                {formatNumber(
-                  report.summary.totalOrders,
-                )}
-              </strong>
-            </div>
+          {/* KPI */}
 
-            <div className="stat">
-              <span>Total Revenue</span>
-              <strong>
-                {formatCurrency(
-                  report.summary.totalRevenue,
-                )}
-              </strong>
-            </div>
+          <div className="reports-kpis">
+            <Card className="report-kpi">
+              <div className="report-kpi-icon orders">
+                #
+              </div>
 
-            <div className="stat">
-              <span>Total Paid</span>
-              <strong>
-                {formatCurrency(
-                  report.summary.totalPaid,
-                )}
-              </strong>
-            </div>
+              <div>
+                <span>Total Orders</span>
 
-            <div className="stat">
-              <span>Outstanding</span>
-              <strong>
-                {formatCurrency(
-                  report.summary.totalOutstanding,
-                )}
-              </strong>
-            </div>
+                <strong>
+                  {formatNumber(
+                    report.summary.totalOrders,
+                  )}
+                </strong>
+              </div>
+            </Card>
 
-            <div className="stat">
-              <span>Average Order</span>
+            <Card className="report-kpi">
+              <div className="report-kpi-icon revenue">
+                Rp
+              </div>
+
+              <div>
+                <span>Total Revenue</span>
+
+                <strong>
+                  {formatCurrency(
+                    report.summary.totalRevenue,
+                  )}
+                </strong>
+              </div>
+            </Card>
+
+            <Card className="report-kpi">
+              <div className="report-kpi-icon paid">
+                ✓
+              </div>
+
+              <div>
+                <span>Total Paid</span>
+
+                <strong>
+                  {formatCurrency(
+                    report.summary.totalPaid,
+                  )}
+                </strong>
+              </div>
+            </Card>
+
+            <Card className="report-kpi">
+              <div className="report-kpi-icon outstanding">
+                !
+              </div>
+
+              <div>
+                <span>Outstanding</span>
+
+                <strong>
+                  {formatCurrency(
+                    report.summary.totalOutstanding,
+                  )}
+                </strong>
+              </div>
+            </Card>
+          </div>
+
+          {/* Secondary KPI */}
+
+          <Card className="average-order-card">
+            <div>
+              <span>Average Order Value</span>
+
               <strong>
                 {formatCurrency(
                   report.summary.averageOrderValue,
                 )}
               </strong>
             </div>
-          </div>
 
-          <section className="section">
-            <div className="section-header">
-              <div>
-                <h3>Orders by Status</h3>
+            <span className="average-order-label">
+              Rata-rata nilai setiap order
+            </span>
+          </Card>
+
+          {/* Charts */}
+
+          <div className="reports-chart-grid">
+            <Card className="report-chart-card revenue-chart-card">
+              <div className="report-section-header">
+                <div>
+                  <h3>Revenue Overview</h3>
+
+                  <p>
+                    Pendapatan berdasarkan tanggal.
+                  </p>
+                </div>
+
+                <span className="report-chart-badge">
+                  Revenue
+                </span>
               </div>
-            </div>
 
-            <Card>
+              <div className="revenue-chart">
+                {report.revenueByDate.length === 0 ? (
+                  <EmptyState
+                    title="Belum ada data"
+                    description="Tidak ada revenue pada periode ini."
+                  />
+                ) : (
+                  <div className="revenue-bars">
+                    {report.revenueByDate.map((item) => {
+                      const maxRevenue = Math.max(
+                        ...report.revenueByDate.map(
+                          (entry) => Number(entry.revenue),
+                        ),
+                        1,
+                      );
+
+                      const height =
+                        (Number(item.revenue) /
+                          maxRevenue) *
+                        100;
+
+                      return (
+                        <div
+                          className="revenue-bar-item"
+                          key={item.date}
+                        >
+                          <div className="revenue-bar-value">
+                            {formatCurrency(item.revenue)}
+                          </div>
+
+                          <div className="revenue-bar-track">
+                            <div
+                              className="revenue-bar"
+                              style={{
+                                height: `${Math.max(
+                                  height,
+                                  4,
+                                )}%`,
+                              }}
+                            />
+                          </div>
+
+                          <span>
+                            {formatDate(item.date)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </Card>
+
+            <Card className="report-chart-card">
+              <div className="report-section-header">
+                <div>
+                  <h3>Orders by Status</h3>
+
+                  <p>
+                    Distribusi status order.
+                  </p>
+                </div>
+              </div>
+
               {report.ordersByStatus.length === 0 ? (
                 <EmptyState
-                  title="No orders"
+                  title="Belum ada order"
                   description="Tidak ada order pada periode ini."
                 />
               ) : (
-                <table className="ui-table">
-                  <thead>
-                    <tr>
-                      <th>Status</th>
-                      <th>Orders</th>
-                    </tr>
-                  </thead>
+                <div className="status-chart">
+                  {report.ordersByStatus.map((item) => {
+                    const totalOrders =
+                      report.summary.totalOrders || 1;
 
-                  <tbody>
-                    {report.ordersByStatus.map(
-                      (item) => (
-                        <tr key={item.status}>
-                          <td>
-                            {formatStatus(
-                              item.status,
-                            )}
-                          </td>
+                    const percentage =
+                      (item.count / totalOrders) * 100;
 
-                          <td>
-                            {formatNumber(
-                              item.count,
-                            )}
-                          </td>
-                        </tr>
-                      ),
-                    )}
-                  </tbody>
-                </table>
+                    return (
+                      <div
+                        className="status-chart-item"
+                        key={item.status}
+                      >
+                        <div className="status-chart-label">
+                          <span>
+                            {formatStatus(item.status)}
+                          </span>
+
+                          <strong>
+                            {formatNumber(item.count)}
+                          </strong>
+                        </div>
+
+                        <div className="status-chart-track">
+                          <div
+                            className={`status-chart-bar status-${item.status.toLowerCase()}`}
+                            style={{
+                              width: `${percentage}%`,
+                            }}
+                          />
+                        </div>
+
+                        <small>
+                          {percentage.toFixed(0)}%
+                        </small>
+                      </div>
+                    );
+                  })}
+                </div>
               )}
             </Card>
-          </section>
+          </div>
 
-          <section className="section">
-            <div className="section-header">
+          {/* Top Services */}
+
+          <Card className="top-services-card">
+            <div className="report-section-header">
               <div>
-                <h3>Revenue by Date</h3>
+                <h3>Top Services</h3>
+
+                <p>
+                  Service dengan kontribusi revenue terbesar.
+                </p>
               </div>
             </div>
 
-            <Card>
-              {report.revenueByDate.length === 0 ? (
-                <EmptyState
-                  title="No revenue data"
-                  description="Belum ada transaksi pada periode ini."
-                />
-              ) : (
-                <table className="ui-table">
+            {report.topServices.length === 0 ? (
+              <EmptyState
+                title="Belum ada data service"
+                description="Belum ada service yang terjual pada periode ini."
+              />
+            ) : (
+              <div className="top-services-list">
+                {report.topServices.map((item, index) => {
+                  const maxRevenue = Math.max(
+                    ...report.topServices.map(
+                      (service) =>
+                        Number(service.revenue),
+                    ),
+                    1,
+                  );
+
+                  const percentage =
+                    (Number(item.revenue) /
+                      maxRevenue) *
+                    100;
+
+                  return (
+                    <div
+                      className="top-service-item"
+                      key={item.serviceId}
+                    >
+                      <div className="top-service-rank">
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+
+                      <div className="top-service-info">
+                        <div className="top-service-heading">
+                          <strong>{item.name}</strong>
+
+                          <span>
+                            {formatNumber(item.quantity)} item
+                          </span>
+                        </div>
+
+                        <div className="top-service-track">
+                          <div
+                            className="top-service-bar"
+                            style={{
+                              width: `${percentage}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      <strong className="top-service-revenue">
+                        {formatCurrency(item.revenue)}
+                      </strong>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </Card>
+
+          {/* Revenue Detail */}
+
+          <Card className="report-table-card">
+            <div className="report-section-header">
+              <div>
+                <h3>Revenue Detail</h3>
+
+                <p>
+                  Rincian order dan pembayaran berdasarkan tanggal.
+                </p>
+              </div>
+            </div>
+
+            {report.revenueByDate.length === 0 ? (
+              <EmptyState
+                title="Belum ada data"
+                description="Belum ada transaksi pada periode ini."
+              />
+            ) : (
+              <div className="report-table-wrapper">
+                <table className="ui-table reports-table">
                   <thead>
                     <tr>
                       <th>Date</th>
@@ -341,81 +564,24 @@ export function Reports() {
                           </td>
 
                           <td>
-                            {formatNumber(
-                              item.orders,
-                            )}
+                            {formatNumber(item.orders)}
                           </td>
 
-                          <td>
-                            {formatCurrency(
-                              item.revenue,
-                            )}
+                          <td className="report-money">
+                            {formatCurrency(item.revenue)}
                           </td>
 
-                          <td>
-                            {formatCurrency(
-                              item.paid,
-                            )}
+                          <td className="report-money">
+                            {formatCurrency(item.paid)}
                           </td>
                         </tr>
                       ),
                     )}
                   </tbody>
                 </table>
-              )}
-            </Card>
-          </section>
-
-          <section className="section">
-            <div className="section-header">
-              <div>
-                <h3>Top Services</h3>
               </div>
-            </div>
-
-            <Card>
-              {report.topServices.length === 0 ? (
-                <EmptyState
-                  title="No service data"
-                  description="Belum ada service yang terjual pada periode ini."
-                />
-              ) : (
-                <table className="ui-table">
-                  <thead>
-                    <tr>
-                      <th>Service</th>
-                      <th>Quantity</th>
-                      <th>Revenue</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {report.topServices.map(
-                      (item) => (
-                        <tr key={item.serviceId}>
-                          <td>
-                            {item.name}
-                          </td>
-
-                          <td>
-                            {formatNumber(
-                              item.quantity,
-                            )}
-                          </td>
-
-                          <td>
-                            {formatCurrency(
-                              item.revenue,
-                            )}
-                          </td>
-                        </tr>
-                      ),
-                    )}
-                  </tbody>
-                </table>
-              )}
-            </Card>
-          </section>
+            )}
+          </Card>
         </>
       )}
     </section>

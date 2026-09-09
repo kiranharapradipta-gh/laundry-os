@@ -190,7 +190,7 @@ export function ServiceEdit() {
   }
 
   return (
-    <div className="page">
+    <div className="page service-form-page">
       <div className="page-header">
         <div>
           <button
@@ -209,17 +209,26 @@ export function ServiceEdit() {
         </div>
       </div>
 
-      <Card className="form-card">
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="form-section">
-            <div className="form-section-title">
+      <Card className="service-form-card">
+        <form
+          className="service-form"
+          onSubmit={handleSubmit}
+        >
+          <div className="service-form-header">
+            <div className="service-form-icon">
+              {name.charAt(0).toUpperCase() || "S"}
+            </div>
+
+            <div>
               <h2>Informasi Service</h2>
 
               <p>
-                Ubah informasi layanan sesuai kebutuhan.
+                Perbarui detail layanan yang tersedia di laundry.
               </p>
             </div>
+          </div>
 
+          <div className="service-form-fields">
             <Input
               label="Nama Service"
               name="name"
@@ -243,7 +252,7 @@ export function ServiceEdit() {
               disabled={saving}
             />
 
-            <div className="form-row">
+            <div className="service-form-row">
               <Input
                 label="Harga"
                 name="price"
@@ -271,16 +280,41 @@ export function ServiceEdit() {
               />
             </div>
 
-            <Select
-              label="Status Service"
-              name="status"
-              value={status}
-              onChange={(event) =>
-                setStatus(event.target.value)
-              }
-              options={STATUS_OPTIONS}
-              disabled={saving}
-            />
+            <div className="service-status-section">
+              <div className="service-status-heading">
+                <div>
+                  <h3>Status Service</h3>
+
+                  <p>
+                    Tentukan apakah service ini masih tersedia
+                    untuk digunakan pada order baru.
+                  </p>
+                </div>
+
+                <span
+                  className={`service-status-indicator ${
+                    status === "ACTIVE"
+                      ? "is-active"
+                      : "is-inactive"
+                  }`}
+                >
+                  {status === "ACTIVE"
+                    ? "Aktif"
+                    : "Nonaktif"}
+                </span>
+              </div>
+
+              <Select
+                label="Status"
+                name="status"
+                value={status}
+                onChange={(event) =>
+                  setStatus(event.target.value)
+                }
+                options={STATUS_OPTIONS}
+                disabled={saving}
+              />
+            </div>
           </div>
 
           {error && (
@@ -289,7 +323,7 @@ export function ServiceEdit() {
             </div>
           )}
 
-          <div className="form-actions">
+          <div className="service-form-actions">
             <Button
               type="button"
               variant="secondary"

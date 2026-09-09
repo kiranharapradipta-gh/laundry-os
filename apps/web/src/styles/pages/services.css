@@ -270,3 +270,263 @@
   outline-offset: 3px;
   border-radius: 3px;
 }
+
+/* =========================
+   SERVICES HERO
+========================= */
+
+.services-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 24px;
+
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: var(--surface);
+  box-sizing: border-box;
+}
+
+.services-hero-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  min-width: 0;
+}
+
+.services-hero-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  border-radius: 14px;
+
+  background: var(--surface-soft);
+  color: var(--primary);
+
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.services-hero-text {
+  min-width: 0;
+}
+
+.services-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+
+  color: var(--primary);
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.services-hero h1 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.services-hero p {
+  max-width: 620px;
+  margin: 6px 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.services-add-button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+
+/* =========================
+   SERVICES STATS
+========================= */
+
+.services-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.services-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.services-stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+
+  border-radius: 12px;
+
+  background: var(--surface-soft);
+  color: var(--primary);
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.services-stat-icon.active {
+  background: #ecfdf3;
+  color: #16a34a;
+}
+
+.services-stat-icon.inactive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.services-stat-content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.services-stat-content > span {
+  color: var(--text-muted);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.services-stat-content strong {
+  margin-top: 2px;
+
+  color: var(--text);
+
+  font-size: 23px;
+  line-height: 1.2;
+  font-weight: 750;
+}
+
+.services-stat-content small {
+  margin-top: 3px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .services-hero {
+    align-items: flex-start;
+  }
+
+  .services-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .services-hero {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 20px;
+  }
+
+  .services-hero-content {
+    align-items: flex-start;
+  }
+
+  .services-hero h1 {
+    font-size: 24px;
+  }
+
+  .services-hero p {
+    font-size: 12px;
+  }
+
+  .services-add-button {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .services-hero {
+    gap: 18px;
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .services-hero-icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+
+    border-radius: 11px;
+    font-size: 19px;
+  }
+
+  .services-eyebrow {
+    font-size: 10px;
+  }
+
+  .services-hero h1 {
+    font-size: 21px;
+  }
+
+  .services-hero p {
+    margin-top: 5px;
+    font-size: 12px;
+  }
+
+  .services-stat-card {
+    gap: 12px;
+  }
+
+  .services-stat-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .services-stat-content strong {
+    font-size: 20px;
+  }
+}

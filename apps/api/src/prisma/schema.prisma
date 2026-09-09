@@ -82,6 +82,8 @@ model Business {
   address String?
   logoUrl String?
 
+  settings BusinessSettings?
+
   users            User[]
   customers        Customer[]
   services         Service[]
@@ -91,6 +93,33 @@ model Business {
   notifications    Notification[]
   complaints       Complaint[]
   auditLogs        AuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ========================================
+// BUSINESS SETTINGS
+// ========================================
+
+model BusinessSettings {
+  id String @id @default(uuid())
+
+  businessId String @unique
+
+  openingTime String @default("08:00")
+  closingTime String @default("21:00")
+
+  operatingDays Json @default("[1,2,3,4,5,6]")
+
+  processingDays Int @default(2)
+
+  defaultOrderStatus OrderStatus @default(RECEIVED)
+
+  allowOrderCancellation Boolean @default(true)
+  confirmBeforeDelete Boolean @default(true)
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

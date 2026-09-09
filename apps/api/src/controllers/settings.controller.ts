@@ -6,6 +6,7 @@ import {
   changePassword,
   getSettings,
   updateBusiness,
+  updateOperationalSettings,
   updateProfile,
 } from "../services/settings.service.js";
 
@@ -119,6 +120,51 @@ export async function updateBusinessController(
         error instanceof Error
           ? error.message
           : "Gagal memperbarui informasi laundry",
+    });
+  }
+}
+
+export async function updateOperationalSettingsController(
+  req: AuthRequest,
+  res: Response
+) {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Tidak terautentikasi",
+      });
+    }
+
+    const data = await updateOperationalSettings(
+      req.user.userId,
+      req.user.businessId,
+      {
+        openingTime: req.body.openingTime,
+        closingTime: req.body.closingTime,
+        operatingDays: req.body.operatingDays,
+        processingDays: req.body.processingDays,
+        allowOrderCancellation:
+          req.body.allowOrderCancellation,
+        confirmBeforeDelete:
+          req.body.confirmBeforeDelete,
+      }
+    );
+
+    return res.json({
+      success: true,
+      message: "Pengaturan operasional berhasil diperbarui",
+      data,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(400).json({
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Gagal memperbarui pengaturan operasional",
     });
   }
 }

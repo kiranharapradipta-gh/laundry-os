@@ -48,12 +48,59 @@ export async function getServiceById(
   businessId: string,
   serviceId: string
 ) {
-  return prisma.service.findFirst({
+  const service = await prisma.service.findFirst({
     where: {
       id: serviceId,
       businessId,
     },
   });
+
+  if (!service) {
+    return null;
+  }
+
+  const orderItems = await prisma.orderItem.findMany({
+    where: {
+      serviceId,
+      order: {
+        businessId,
+      },
+    },
+    include: {
+      order: {
+        include: {
+          customer: true,
+        },
+      },
+    },
+    orderBy: {
+      order: {
+        createdAt: "desc",
+      },
+    },
+  });
+
+  return {
+    ...service,
+    orders: orderItems.map((item) => ({
+      id: item.order.id,
+      orderNumber: item.order.orderNumber,
+      status: item.order.status,
+      paymentStatus: item.order.paymentStatus,
+      customer: {
+        id: item.order.customer.id,
+        name: item.order.customer.name,
+        nickname: item.order.customer.nickname,
+        phone: item.order.customer.phone,
+      },
+      quantity: item.quantity,
+      // weight: item.weight,
+      unitPrice: item.unitPrice,
+      subtotal: item.subtotal,
+      notes: item.notes,
+      createdAt: item.order.createdAt,
+    })),
+  };
 }
 
 // ========================================

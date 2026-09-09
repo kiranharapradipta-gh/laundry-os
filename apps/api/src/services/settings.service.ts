@@ -23,6 +23,19 @@ export async function getSettings(userId: string, businessId: string) {
           phone: true,
           address: true,
           logoUrl: true,
+
+          settings: {
+            select: {
+              id: true,
+              openingTime: true,
+              closingTime: true,
+              operatingDays: true,
+              processingDays: true,
+              defaultOrderStatus: true,
+              allowOrderCancellation: true,
+              confirmBeforeDelete: true,
+            },
+          },
         },
       },
     },
@@ -149,6 +162,128 @@ export async function updateBusiness(
       phone: true,
       address: true,
       logoUrl: true,
+    },
+  });
+}
+
+export async function updateOperationalSettings(
+  userId: string,
+  businessId: string,
+  data: {
+    openingTime?: string;
+    closingTime?: string;
+    operatingDays?: number[];
+    processingDays?: number;
+    defaultOrderStatus?: "RECEIVED";
+    allowOrderCancellation?: boolean;
+    confirmBeforeDelete?: boolean;
+  }
+) {
+  const user = await prisma.user.findFirst({
+    where: {
+      id: userId,
+      businessId,
+      isActive: true,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User tidak ditemukan");
+  }
+
+  if (
+    data.openingTime !== undefined &&
+    !/^\d{2}:\d{2}$/.test(data.openingTime)
+  ) {
+    throw new Error("Jam buka tidak valid");
+  }
+
+  if (
+    data.closingTime !== undefined &&
+    !/^\d{2}:\d{2}$/.test(data.closingTime)
+  ) {
+    throw new Error("Jam tutup tidak valid");
+  }
+
+  if (
+    data.processingDays !== undefined &&
+    (data.processingDays < 1 || data.processingDays > 30)
+  ) {
+    throw new Error("Estimasi pengerjaan harus antara 1-30 hari");
+  }
+
+  if (data.operatingDays !== undefined) {
+    const validDays = data.operatingDays.every(
+      (day) => Number.isInteger(day) && day >= 1 && day <= 7
+    );
+
+    if (!validDays) {
+      throw new Error("Hari operasional tidak valid");
+    }
+  }
+
+  return prisma.businessSettings.upsert({
+    where: {
+      businessId,
+    },
+
+    create: {
+      businessId,
+
+      openingTime: data.openingTime ?? "08:00",
+      closingTime: data.closingTime ?? "21:00",
+
+      operatingDays: data.operatingDays ?? [1, 2, 3, 4, 5, 6],
+
+      processingDays: data.processingDays ?? 2,
+
+      defaultOrderStatus: "RECEIVED",
+
+      allowOrderCancellation:
+        data.allowOrderCancellation ?? true,
+
+      confirmBeforeDelete:
+        data.confirmBeforeDelete ?? true,
+    },
+
+    update: {
+      ...(data.openingTime !== undefined && {
+        openingTime: data.openingTime,
+      }),
+
+      ...(data.closingTime !== undefined && {
+        closingTime: data.closingTime,
+      }),
+
+      ...(data.operatingDays !== undefined && {
+        operatingDays: data.operatingDays,
+      }),
+
+      ...(data.processingDays !== undefined && {
+        processingDays: data.processingDays,
+      }),
+
+      ...(data.allowOrderCancellation !== undefined && {
+        allowOrderCancellation: data.allowOrderCancellation,
+      }),
+
+      ...(data.confirmBeforeDelete !== undefined && {
+        confirmBeforeDelete: data.confirmBeforeDelete,
+      }),
+    },
+
+    select: {
+      id: true,
+      openingTime: true,
+      closingTime: true,
+      operatingDays: true,
+      processingDays: true,
+      defaultOrderStatus: true,
+      allowOrderCancellation: true,
+      confirmBeforeDelete: true,
     },
   });
 }
