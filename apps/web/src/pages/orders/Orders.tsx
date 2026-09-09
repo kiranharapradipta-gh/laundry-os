@@ -220,117 +220,192 @@ export function Orders() {
   ];
 
   return (
-    <div className="page">
-      <div className="page-header">
-        <div>
-          <h2>Orders</h2>
+    <div className="page orders-page">
+      <div className="orders-container">
+        {/* HEADER */}
+        <section className="orders-hero">
+          <div className="orders-hero-content">
+            <span className="orders-eyebrow">ORDERS</span>
 
-          <p>
-            Kelola semua pesanan laundry.
-          </p>
-        </div>
-
-        <Button
-          variant="primary"
-          onClick={() => navigate("/orders/new")}
-        >
-          + Order Baru
-        </Button>
-      </div>
-
-      <Card>
-        <form
-          className="toolbar"
-          onSubmit={handleSearchSubmit}
-        >
-          <div className="toolbar-main">
-            <Input
-              placeholder="Cari nomor order, nama, atau nomor HP..."
-              value={searchInput}
-              onChange={(event) =>
-                setSearchInput(event.target.value)
-              }
-            />
-          </div>
-
-          <Button
-            type="submit"
-            variant="secondary"
-          >
-            Cari
-          </Button>
-
-          <div className="toolbar-field">
-            <Select
-              label="Status"
-              value={status}
-              options={STATUS_OPTIONS}
-              onChange={(event) =>
-                handleStatusChange(event.target.value)
-              }
-            />
-          </div>
-        </form>
-      </Card>
-
-      {error && (
-        <Card className="page-error">
-          <div className="page-error-content">
-            <strong>
-              Gagal memuat orders
-            </strong>
-
-            <p>{error}</p>
-          </div>
-
-          <Button
-            variant="secondary"
-            onClick={() => void loadOrders()}
-          >
-            Coba Lagi
-          </Button>
-        </Card>
-      )}
-
-      <Card className="no-padding">
-        <div className="section-header table-section-header">
-          <div className="section-header-content">
-            <h3>Daftar Orders</h3>
+            <h1>Orders</h1>
 
             <p>
-              {total} total order
+              Kelola pesanan laundry, pantau status, dan
+              proses order dengan lebih mudah.
             </p>
           </div>
-        </div>
 
-        <Table
-          columns={columns}
-          data={orders}
-          rowKey={(order) => order.id}
-          loading={loading}
-          empty={
-            <EmptyState
-              title="Belum ada order"
-              description={
-                search || status !== "ALL"
-                  ? "Tidak ada order yang sesuai dengan filter."
-                  : "Belum ada pesanan laundry."
+          <Button
+            variant="primary"
+            className="orders-primary-button"
+            onClick={() => navigate("/orders/new")}
+          >
+            <span className="orders-button-icon">+</span>
+            Order Baru
+          </Button>
+        </section>
+
+        {/* TOOLBAR */}
+        <Card className="orders-toolbar-card">
+          <form
+            className="orders-toolbar"
+            onSubmit={handleSearchSubmit}
+          >
+            <div className="orders-search">
+              <span className="orders-search-icon">⌕</span>
+
+              <Input
+                placeholder="Cari nomor order, nama, atau nomor HP..."
+                value={searchInput}
+                onChange={(event) =>
+                  setSearchInput(event.target.value)
+                }
+              />
+            </div>
+
+            <div className="orders-toolbar-actions">
+              <Button
+                type="submit"
+                variant="secondary"
+              >
+                Cari
+              </Button>
+
+              <div className="orders-status-filter">
+                <Select
+                  label="Status"
+                  value={status}
+                  options={STATUS_OPTIONS}
+                  onChange={(event) =>
+                    handleStatusChange(event.target.value)
+                  }
+                />
+              </div>
+            </div>
+          </form>
+        </Card>
+
+        {/* ERROR */}
+        {error && (
+          <Card className="orders-error-card">
+            <div className="orders-error-content">
+              <div className="orders-error-icon">!</div>
+
+              <div>
+                <strong>Gagal memuat orders</strong>
+                <p>{error}</p>
+              </div>
+            </div>
+
+            <Button
+              variant="secondary"
+              onClick={() => void loadOrders()}
+            >
+              Coba Lagi
+            </Button>
+          </Card>
+        )}
+
+        {/* SUMMARY */}
+        <section className="orders-summary">
+          <div className="orders-summary-item">
+            <span>Total order</span>
+
+            <strong>
+              {loading ? "—" : total}
+            </strong>
+          </div>
+
+          <div className="orders-summary-item">
+            <span>Halaman</span>
+
+            <strong>
+              {loading
+                ? "—"
+                : `${page} / ${totalPages || 1}`}
+            </strong>
+          </div>
+
+          {(search || status !== "ALL") && (
+            <div className="orders-active-filter">
+              <span>Filter aktif</span>
+
+              {search && (
+                <span className="orders-filter-chip">
+                  “{search}”
+                </span>
+              )}
+
+              {status !== "ALL" && (
+                <span className="orders-filter-chip">
+                  {STATUS_OPTIONS.find(
+                    (option) => option.value === status
+                  )?.label || status}
+                </span>
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* TABLE */}
+        <Card className="no-padding orders-table-card">
+          <div className="orders-table-header">
+            <div>
+              <span className="orders-table-eyebrow">
+                ORDER MANAGEMENT
+              </span>
+
+              <h2>Daftar Orders</h2>
+
+              <p>
+                Semua pesanan laundry yang terdaftar di bisnis kamu.
+              </p>
+            </div>
+
+            <span className="orders-table-count">
+              {loading
+                ? "Memuat..."
+                : `${orders.length} ditampilkan`}
+            </span>
+          </div>
+
+          <div className="orders-table-wrapper">
+            <Table
+              columns={columns}
+              data={orders}
+              rowKey={(order) => order.id}
+              loading={loading}
+              empty={
+                <EmptyState
+                  title={
+                    search || status !== "ALL"
+                      ? "Order tidak ditemukan"
+                      : "Belum ada order"
+                  }
+                  description={
+                    search || status !== "ALL"
+                      ? "Tidak ada order yang sesuai dengan filter."
+                      : "Belum ada pesanan laundry."
+                  }
+                />
               }
             />
-          }
-        />
+          </div>
 
-        {!loading && totalPages > 0 && (
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            total={total}
-            limit={limit}
-            onPageChange={setPage}
-            onLimitChange={handleLimitChange}
-          />
-        )}
-      </Card>
+          {!loading && totalPages > 0 && (
+            <div className="orders-pagination">
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                total={total}
+                limit={limit}
+                onPageChange={setPage}
+                onLimitChange={handleLimitChange}
+              />
+            </div>
+          )}
+        </Card>
+      </div>
     </div>
   );
 }

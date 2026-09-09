@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "../../components/ui";
-import { getSettings } from "../../services/api/settings";
+import { getSettings, updateOperationalSettings } from "../../services/api/settings";
 import type { OperationalSettings as OperationalSettingsType, SettingsData } from "../../types/settings";
 
 import ProfileSettings from "./ProfileSettings";
@@ -95,6 +95,39 @@ export function Settings() {
     window.setTimeout(() => {
       setError("");
     }, 5000);
+  }
+
+  async function handleOperationalSave(
+    input: Parameters<typeof updateOperationalSettings>[0],
+  ) {
+    try {
+      setError("");
+      setMessage("");
+
+      const data = await updateOperationalSettings(input);
+
+      setSettings((current) =>
+        current
+          ? {
+              ...current,
+              business: {
+                ...current.business,
+                settings: data,
+              },
+            }
+          : current,
+      );
+
+      setMessage("Pengaturan operasional berhasil diperbarui.");
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Gagal memperbarui pengaturan operasional",
+      );
+
+      throw err;
+    }
   }
 
   if (loading) {
@@ -263,7 +296,7 @@ export function Settings() {
 
         <OperationalSettings
           settings={operational}
-          onSaved={loadSettings}
+          onSaved={handleOperationalSave}
         />
       </div>
 

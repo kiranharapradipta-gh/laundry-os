@@ -4,6 +4,7 @@ import type { ApiResponse } from "../../types/api";
 
 import type {
   ChangePasswordInput,
+  OperationalSettings,
   SettingsData,
   UpdateBusinessInput,
   UpdateOperationalSettingsInput,
@@ -74,11 +75,19 @@ export async function changePassword(
 }
 
 export async function updateOperationalSettings(
-  input: UpdateOperationalSettingsInput
-) {
-  const response = await apiClient<ApiResponse<null>>("/settings/operational", {
-    method: 'PATCH',
-    body: JSON.stringify(input)
-  });
-  return response
+  input: UpdateOperationalSettingsInput,
+): Promise<OperationalSettings> {
+  const response = await apiClient<ApiResponse<OperationalSettings>>(
+    "/settings/operational",
+    {
+      method: "PATCH",
+      body: JSON.stringify(input),
+    },
+  );
+
+  if (!response.success) {
+    throw new Error(response.message);
+  }
+
+  return response.data;
 }

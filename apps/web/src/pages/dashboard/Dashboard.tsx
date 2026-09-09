@@ -172,71 +172,119 @@ export function Dashboard() {
   return (
     <div className="dashboard-page">
       <div className="dashboard-container">
+
+        {/* =====================================================
+            HERO
+        ===================================================== */}
+
         <section className="dashboard-hero">
           <div>
-            <span className="dashboard-eyebrow">OVERVIEW</span>
+            <span className="dashboard-eyebrow">
+              OVERVIEW
+            </span>
 
             <h1>
-              {getGreeting()}, {displayName.split(" ")[0]} <span>👋</span>
+              {getGreeting()}, {displayName.split(" ")[0]}{" "}
+              <span>👋</span>
             </h1>
 
-            <p>Pantau aktivitas laundry kamu dalam satu tempat.</p>
+            <p>
+              Pantau aktivitas laundry kamu dalam satu tempat.
+            </p>
           </div>
 
           <div className="dashboard-date">
-            <span className="dashboard-date-icon">◷</span>
+            <span className="dashboard-date-icon">
+              ◷
+            </span>
+
             <span>{today}</span>
           </div>
         </section>
 
+        {/* =====================================================
+            ERROR
+        ===================================================== */}
+
         {error && (
           <div className="dashboard-error">
-            <strong>Gagal memuat dashboard</strong>
+            <strong>
+              Gagal memuat dashboard
+            </strong>
+
             <span>{error}</span>
           </div>
         )}
+
+        {/* =====================================================
+            REVENUE
+        ===================================================== */}
 
         <section className="dashboard-revenue-card">
           <div className="revenue-card-top">
             <div>
               <span className="dashboard-card-label">
-                Pendapatan hari ini
+                PENDAPATAN HARI INI
               </span>
 
               <div className="revenue-value">
-                {loading ? "Memuat..." : formatCurrency(todayRevenue)}
+                {loading
+                  ? "Memuat..."
+                  : formatCurrency(todayRevenue)}
               </div>
 
               <div className="revenue-change">
                 <span>Data real-time</span>
-                <small> dari order PostgreSQL</small>
+                <small>
+                  dari order PostgreSQL
+                </small>
               </div>
             </div>
 
-            <div className="revenue-icon">Rp</div>
+            <div className="revenue-icon">
+              Rp
+            </div>
           </div>
 
           <div className="revenue-divider" />
 
           <div className="revenue-footer">
             <span>Target harian</span>
-            <strong>Rp 1.500.000</strong>
+
+            <strong>
+              Rp 1.500.000
+            </strong>
           </div>
 
           <div className="revenue-progress">
-            <span style={{ width: `${revenueProgress}%` }} />
+            <span
+              style={{
+                width: `${revenueProgress}%`,
+              }}
+            />
           </div>
         </section>
 
+        {/* =====================================================
+            KPI
+        ===================================================== */}
+
         <section className="dashboard-stats">
+
           <article className="stat-card">
-            <div className="stat-icon stat-icon-orders">▣</div>
+            <div className="stat-icon stat-icon-orders">
+              ▣
+            </div>
 
             <div className="stat-content">
-              <span>Order hari ini</span>
+              <span>
+                Order hari ini
+              </span>
 
               <strong>
-                {loading ? "—" : todayOrders.length}
+                {loading
+                  ? "—"
+                  : todayOrders.length}
               </strong>
 
               <div className="stat-meta">
@@ -247,30 +295,42 @@ export function Dashboard() {
           </article>
 
           <article className="stat-card">
-            <div className="stat-icon stat-icon-process">◌</div>
+            <div className="stat-icon stat-icon-process">
+              ◌
+            </div>
 
             <div className="stat-content">
-              <span>Sedang diproses</span>
+              <span>
+                Sedang diproses
+              </span>
 
               <strong>
-                {loading ? "—" : statusStats.processing}
+                {loading
+                  ? "—"
+                  : statusStats.processing}
               </strong>
 
               <div className="stat-meta">
-                <b>Washing + drying</b>
-                <small>+ ironing</small>
+                <b>PROCESS</b>
+                <small>aktif</small>
               </div>
             </div>
           </article>
 
           <article className="stat-card">
-            <div className="stat-icon stat-icon-ready">✓</div>
+            <div className="stat-icon stat-icon-ready">
+              ✓
+            </div>
 
             <div className="stat-content">
-              <span>Siap diambil</span>
+              <span>
+                Siap diambil
+              </span>
 
               <strong>
-                {loading ? "—" : statusStats.ready}
+                {loading
+                  ? "—"
+                  : statusStats.ready}
               </strong>
 
               <div className="stat-meta">
@@ -281,13 +341,19 @@ export function Dashboard() {
           </article>
 
           <article className="stat-card">
-            <div className="stat-icon stat-icon-done">✓</div>
+            <div className="stat-icon stat-icon-done">
+              ✓
+            </div>
 
             <div className="stat-content">
-              <span>Selesai</span>
+              <span>
+                Selesai
+              </span>
 
               <strong>
-                {loading ? "—" : statusStats.completed}
+                {loading
+                  ? "—"
+                  : statusStats.completed}
               </strong>
 
               <div className="stat-meta">
@@ -296,34 +362,53 @@ export function Dashboard() {
               </div>
             </div>
           </article>
+
         </section>
 
+        {/* =====================================================
+            OPERATIONAL + STATUS
+        ===================================================== */}
+
         <section className="dashboard-grid">
-          <article className="dashboard-card revenue-chart-card">
+
+          <article className="dashboard-card status-card">
             <div className="dashboard-card-header">
               <div>
-                <span className="dashboard-card-label">OPERASIONAL</span>
-                <h2>Ringkasan order</h2>
+                <span className="dashboard-card-label">
+                  OPERASIONAL
+                </span>
+
+                <h2>
+                  Ringkasan order
+                </h2>
               </div>
             </div>
 
             <div className="status-overview">
+
               <div className="status-total">
                 <strong>
-                  {loading ? "—" : orders.length}
+                  {loading
+                    ? "—"
+                    : orders.length}
                 </strong>
 
-                <span>Order dimuat</span>
+                <span>
+                  total order
+                </span>
               </div>
 
               <div className="status-list">
+
                 <div className="status-row">
                   <span>
                     <i className="status-dot status-new" />
                     Diterima
                   </span>
 
-                  <strong>{statusStats.received}</strong>
+                  <strong>
+                    {statusStats.received}
+                  </strong>
                 </div>
 
                 <div className="status-row">
@@ -332,7 +417,9 @@ export function Dashboard() {
                     Diproses
                   </span>
 
-                  <strong>{statusStats.processing}</strong>
+                  <strong>
+                    {statusStats.processing}
+                  </strong>
                 </div>
 
                 <div className="status-row">
@@ -341,7 +428,9 @@ export function Dashboard() {
                     Siap diambil
                   </span>
 
-                  <strong>{statusStats.ready}</strong>
+                  <strong>
+                    {statusStats.ready}
+                  </strong>
                 </div>
 
                 <div className="status-row">
@@ -350,53 +439,40 @@ export function Dashboard() {
                     Selesai
                   </span>
 
-                  <strong>{statusStats.completed}</strong>
+                  <strong>
+                    {statusStats.completed}
+                  </strong>
                 </div>
+
               </div>
             </div>
           </article>
 
-          {/* <article className="dashboard-card status-card">
-            <div className="dashboard-card-header">
-              <div>
-                <span className="dashboard-card-label">INFO</span>
-                <h2>Data dashboard</h2>
-              </div>
-            </div>
-
-            <div className="dashboard-info-list">
-              <div>
-                <span>Sumber data</span>
-                <strong>PostgreSQL</strong>
-              </div>
-
-              <div>
-                <span>Order terbaru</span>
-                <strong>{orders.length}</strong>
-              </div>
-
-              <div>
-                <span>Status aktif</span>
-                <strong>
-                  {statusStats.processing + statusStats.ready}
-                </strong>
-              </div>
-            </div>
-          </article> */}
         </section>
 
+        {/* =====================================================
+            RECENT ORDERS
+        ===================================================== */}
+
         <section className="dashboard-card recent-orders-card">
+
           <div className="dashboard-card-header recent-orders-header">
             <div>
               <span className="dashboard-card-label">
                 AKTIVITAS TERBARU
               </span>
 
-              <h2>Order terbaru</h2>
+              <h2>
+                Order terbaru
+              </h2>
             </div>
 
-            <a href="/orders" className="view-all-link">
-              Lihat semua <span>→</span>
+            <a
+              href="/orders"
+              className="view-all-link"
+            >
+              Lihat semua
+              <span>→</span>
             </a>
           </div>
 
@@ -410,9 +486,11 @@ export function Dashboard() {
             </div>
           ) : (
             <div className="orders-list">
+
               {recentOrders.map((order) => {
                 const customerName =
-                  order.customer?.name?.trim() || "Customer";
+                  order.customer?.name?.trim() ||
+                  "Customer";
 
                 const serviceName =
                   order.items?.[0]?.service?.name ||
@@ -420,30 +498,48 @@ export function Dashboard() {
                   "Laundry";
 
                 return (
-                  <div className="dashboard-order" key={order.id}>
+                  <div
+                    className="dashboard-order"
+                    key={order.id}
+                  >
                     <div className="order-avatar">
                       {getInitials(customerName)}
                     </div>
 
                     <div className="order-main">
+
                       <div className="order-name-row">
-                        <strong>{customerName}</strong>
+                        <strong>
+                          {customerName}
+                        </strong>
 
                         <span>
-                          {formatOrderTime(order.createdAt)}
+                          {formatOrderTime(
+                            order.createdAt,
+                          )}
                         </span>
                       </div>
 
                       <div className="order-detail">
-                        <span>{order.orderNumber}</span>
+                        <span>
+                          {order.orderNumber}
+                        </span>
+
                         <i>•</i>
-                        <span>{serviceName}</span>
+
+                        <span>
+                          {serviceName}
+                        </span>
                       </div>
+
                     </div>
 
                     <div className="order-right">
+
                       <strong>
-                        {formatCurrency(Number(order.total || 0))}
+                        {formatCurrency(
+                          Number(order.total || 0),
+                        )}
                       </strong>
 
                       <span
@@ -451,42 +547,71 @@ export function Dashboard() {
                           order.status,
                         )}`}
                       >
-                        {getStatusLabel(order.status)}
+                        {getStatusLabel(
+                          order.status,
+                        )}
                       </span>
+
                     </div>
                   </div>
                 );
               })}
+
             </div>
           )}
+
         </section>
 
+        {/* =====================================================
+            QUICK ACTIONS
+        ===================================================== */}
+
         <section className="quick-actions">
+
           <a
             href="/orders/new"
             className="quick-action quick-action-primary"
           >
-            <span className="quick-action-icon">+</span>
+            <span className="quick-action-icon">
+              +
+            </span>
 
             <span>
-              <strong>Order baru</strong>
-              <small>Buat transaksi baru</small>
+              <strong>
+                Order baru
+              </strong>
+
+              <small>
+                Buat transaksi baru
+              </small>
             </span>
 
             <b>→</b>
           </a>
 
-          <a href="/customers/new" className="quick-action">
-            <span className="quick-action-icon">♙</span>
+          <a
+            href="/customers/new"
+            className="quick-action"
+          >
+            <span className="quick-action-icon">
+              ♙
+            </span>
 
             <span>
-              <strong>Tambah customer</strong>
-              <small>Daftarkan customer baru</small>
+              <strong>
+                Tambah customer
+              </strong>
+
+              <small>
+                Daftarkan customer baru
+              </small>
             </span>
 
             <b>→</b>
           </a>
+
         </section>
+
       </div>
     </div>
   );
